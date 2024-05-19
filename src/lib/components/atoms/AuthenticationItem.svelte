@@ -72,6 +72,9 @@
 	{:else if data.type == 'apiKey' && data.in == 'header'}
 		<!-- Cookie API Keys handled by CookieAuth -->
 		<h3 class="h3">API Key</h3>
+		<p>
+			API keys are a simple authentication method that the client provides when making API requests.
+		</p>
 		<label class="space-y-2">
 			<h4 class="h4">Unique name for the security scheme</h4>
 			<input class="input" type="text" placeholder="apiKeyAuth" bind:value={data.identifier} />
@@ -89,6 +92,10 @@
 		</label>
 	{:else if data.type == 'openIdConnect'}
 		<h3 class="h3">OpenID</h3>
+		<p>
+			OpenID Connect (OIDC) is an identity layer built on top of the OAuth 2.0 protocol and
+			supported by some OAuth 2.0 providers, such as Google and Azure Active Directory.
+		</p>
 		<label class="space-y-2">
 			<h4 class="h4">Unique name for the security scheme</h4>
 			<input class="input" type="text" placeholder="openIdAuth" bind:value={data.identifier} />
@@ -103,6 +110,10 @@
 		</label>
 	{:else if data.type == 'oauth2'}
 		<h3 class="h3">OAuth2</h3>
+		<p>
+			OAuth 2.0 is an authorization protocol that gives an API client limited access to user data on
+			a web server.
+		</p>
 		<label class="space-y-2">
 			<h4 class="h4">Unique name for the security scheme</h4>
 			<input class="input" type="text" placeholder="oAuth" bind:value={data.identifier} />
@@ -142,6 +153,10 @@
 		</span>
 	{:else if data.type == 'apiKey' && data.in == 'cookie'}
 		<h3 class="h3">Cookie Auth</h3>
+		<p>
+			Cookie authentication uses HTTP cookies to authenticate client requests and maintain session
+			information.
+		</p>
 		<label class="space-y-2">
 			<h4 class="h4">Unique name for the security scheme</h4>
 			<input class="input" type="text" placeholder="cookieAuth" bind:value={data.identifier} />
