@@ -1,15 +1,40 @@
-<!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
+<script lang="ts">
+	import { TabGroup, Tab } from '@skeletonlabs/skeleton';
 
-<div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-5">
-		<h1 class="h1">Let's get cracking bones!</h1>
-		<p>Start by exploring:</p>
-		<ul>
-			<li><code class="code">/src/routes/+layout.svelte</code> - barebones layout</li>
-			<li><code class="code">/src/app.postcss</code> - app wide css</li>
-			<li>
-				<code class="code">/src/routes/+page.svelte</code> - this page, you can replace the contents
-			</li>
-		</ul>
-	</div>
-</div>
+	let tabSet: number = 0;
+</script>
+
+<TabGroup>
+	<Tab bind:group={tabSet} name="info" value={0}>
+		<h4 class="h4">Info</h4>
+	</Tab>
+	<Tab bind:group={tabSet} name="authentication" value={1}>
+		<h4 class="h4">Authentication</h4>
+	</Tab>
+	<Tab bind:group={tabSet} name="servers" value={2}>
+		<h4 class="h4">Servers</h4>
+	</Tab>
+	<Tab bind:group={tabSet} name="paths" value={3}>
+		<h4 class="h4">Paths</h4>
+	</Tab>
+	<Tab bind:group={tabSet} name="components" value={4}>
+		<h4 class="h4">Components</h4>
+	</Tab>
+	<svelte:fragment slot="panel">
+		{#if tabSet === 0}
+			<p>Info</p>
+		{/if}
+		{#if tabSet === 1}
+			<p>Authentication</p>
+		{/if}
+		{#if tabSet === 2}
+			<p>Servers</p>
+		{/if}
+		{#if tabSet === 3}
+			<p>Paths</p>
+		{/if}
+		{#if tabSet === 4}
+			<p>Components</p>
+		{/if}
+	</svelte:fragment>
+</TabGroup>
