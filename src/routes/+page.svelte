@@ -3,6 +3,7 @@
 	import Info from '$lib/components/sections/Info.svelte';
 	import { TabGroup, Tab } from '@skeletonlabs/skeleton';
 	import { persisted } from 'svelte-persisted-store';
+	import Authentication from '$lib/components/sections/Authentication.svelte';
 
 	// let tabSet: number = 0;
 	const tabSet = persisted<number>('tabSet', 0);
@@ -13,7 +14,7 @@
 		<h4 class="h4">Info</h4>
 	</Tab>
 	<Tab bind:group={$tabSet} name="authentication" value={1}>
-		<h4 class="h4">Authentication</h4>
+		<h4 class="h4">Authentication Schemas</h4>
 	</Tab>
 	<Tab bind:group={$tabSet} name="servers" value={2}>
 		<h4 class="h4">Servers</h4>
@@ -27,17 +28,13 @@
 	<svelte:fragment slot="panel">
 		{#if $tabSet === 0}
 			<Info></Info>
-		{/if}
-		{#if $tabSet === 1}
-			<p>Authentication</p>
-		{/if}
-		{#if $tabSet === 2}
+		{:else if $tabSet === 1}
+			<Authentication />
+		{:else if $tabSet === 2}
 			<Servers />
-		{/if}
-		{#if $tabSet === 3}
+		{:else if $tabSet === 3}
 			<p>Paths</p>
-		{/if}
-		{#if $tabSet === 4}
+		{:else if $tabSet === 4}
 			<p>Components</p>
 		{/if}
 	</svelte:fragment>

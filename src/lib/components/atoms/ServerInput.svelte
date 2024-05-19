@@ -19,7 +19,7 @@
 		<input
 			class="input"
 			name="url {id}"
-			placeholder="https://api.example.com"
+			placeholder="https://api.example.com/v1"
 			type="url"
 			bind:value={url}
 		/>
