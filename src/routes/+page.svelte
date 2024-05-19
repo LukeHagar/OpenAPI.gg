@@ -27,11 +27,11 @@
 	</Tab>
 	<svelte:fragment slot="panel">
 		{#if $tabSet === 0}
-			<Info></Info>
+			<Info />
 		{:else if $tabSet === 1}
-			<Authentication />
+			<!-- <Authentication /> -->
 		{:else if $tabSet === 2}
-			<Servers />
+			<!-- <Servers /> -->
 		{:else if $tabSet === 3}
 			<p>Paths</p>
 		{:else if $tabSet === 4}

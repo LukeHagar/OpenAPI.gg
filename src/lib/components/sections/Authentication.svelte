@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { openApiStore } from '$lib';
 	import {
 		apiKeyAuthTemplate,
@@ -80,4 +80,4 @@
 			Add Security Schema
 		</button>
 	</span>
-</form>
+</form> -->

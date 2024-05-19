@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { openApiStore } from '$lib';
 	import ServerInput from '../atoms/ServerInput.svelte';
 
@@ -35,10 +35,9 @@
 			{/if}
 		{/each}
 	</ul>
-	<!-- Add another Server Button -->
 	<span class="flex justify-center" class:!mt-0={$openApiStore.servers.length === 0}>
 		<button type="button" class="btn variant-filled-primary" on:click={addServer}>
 			Add Server
 		</button>
 	</span>
-</form>
+</form> -->
