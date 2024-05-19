@@ -53,28 +53,28 @@
 	{:else if flow.name == 'password'}
 		<h3 class="h3">Password</h3>
 		<label class="space-y-2">
-            <h4 class="h4">Token URL</h4>
-            <input
-                type="text"
-                name="tokenURL"
-                class="input"
-                placeholder="https://api.example.com/oauth2/token"
-                bind:value={flow.tokenUrl}
-            />
-        </label>
-        <ScopeList bind:flow />
+			<h4 class="h4">Token URL</h4>
+			<input
+				type="text"
+				name="tokenURL"
+				class="input"
+				placeholder="https://api.example.com/oauth2/token"
+				bind:value={flow.tokenUrl}
+			/>
+		</label>
+		<ScopeList bind:flow />
 	{:else if flow.name == 'clientCredentials'}
 		<h3 class="h3">Client Credentials</h3>
-        <label class="space-y-2">
-            <h4 class="h4">Token URL</h4>
-            <input
-                type="text"
-                name="tokenURL"
-                class="input"
-                placeholder="https://api.example.com/oauth2/token"
-                bind:value={flow.tokenUrl}
-            />
-        </label>
-        <ScopeList bind:flow />
+		<label class="space-y-2">
+			<h4 class="h4">Token URL</h4>
+			<input
+				type="text"
+				name="tokenURL"
+				class="input"
+				placeholder="https://api.example.com/oauth2/token"
+				bind:value={flow.tokenUrl}
+			/>
+		</label>
+		<ScopeList bind:flow />
 	{/if}
 </div>
