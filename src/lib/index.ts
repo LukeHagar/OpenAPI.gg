@@ -1,1 +1,9 @@
-// place files you want to import through the `$lib` alias in this folder.
+import type { OpenAPI } from './types';
+import { persisted } from 'svelte-persisted-store';
+
+export const openApiStore = persisted<OpenAPI>('openApi', {
+	title: '',
+	version: '',
+	description: '',
+	servers: []
+});
