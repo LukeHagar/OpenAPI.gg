@@ -8,8 +8,15 @@
 	let availableFlows: string[] = ['implicit', 'password', 'clientCredentials', 'authorizationCode'];
 
 	// remove flows that are already in Object.keys(schema.flows)
-	// @ts-expect-error - security schema definition is lacking a bit
-	availableFlows = availableFlows.filter((flow) => !Object.keys(schema.flows).includes(flow));
+	availableFlows = availableFlows.filter((flow) => {
+		// if flows is not defined: skip
+		// @ts-expect-error - security schema definition is lacking a bit
+		if (!schema.flows) return;
+
+		// if schema.flows check if flow already is a key
+		// @ts-expect-error - security schema definition is lacking a bit
+		return !Object.keys(schema.flows).includes(flow);
+	});
 
 	let flowType: string;
 	const addOauthFlow = () => {
