@@ -1,169 +1,129 @@
 <script lang="ts">
 	import { oauth2FlowTemplates } from '$lib/authTemplates';
-	import type { SecuritySchema } from '$lib/types';
-	import OAuthFlow from './OAuthFlow.svelte';
+	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
+	import OAuthFlow from '$lib/components/atoms/OAuthFlow.svelte';
 
-	export let data: SecuritySchema;
+	export let schema: OpenAPIV3_1.SecuritySchemeObject;
 
-	let oauthFlow: string;
-	const addOAuthFlow = () => {
-		if (!data.hasOwnProperty('flows')) {
-			return;
-		}
-		const tempData = data;
-		let newFlow;
+	let availableFlows: string[] = ['implicit', 'password', 'clientCredentials', 'authorizationCode'];
 
-		switch (oauthFlow) {
-			case 'authorizationCode':
-				newFlow = oauth2FlowTemplates.authorizationCode;
-				break;
-			case 'implicit':
-				newFlow = oauth2FlowTemplates.implicit;
-				break;
-			case 'password':
-				newFlow = oauth2FlowTemplates.password;
-				break;
-			case 'clientCredentials':
-				newFlow = oauth2FlowTemplates.clientCredentials;
-				break;
-			default:
-				newFlow = undefined;
-				break;
-		}
+	// remove flows that are already in Object.keys(schema.flows)
+	// @ts-expect-error - security schema definition is lacking a bit
+	availableFlows = availableFlows.filter((flow) => !Object.keys(schema.flows).includes(flow));
 
-		if (newFlow) {
-			// @ts-expect-error - this is only called when data.flows exists
-			tempData.flows.push(newFlow);
-			data = tempData;
-		}
+	let flowType: string;
+	const addOauthFlow = () => {
+		if (!flowType) return;
+		// @ts-expect-error - security schema definition is lacking a bit
+		schema.flows[flowType] = oauth2FlowTemplates[flowType];
+		// remove used flow from availableFlows
+		availableFlows = availableFlows.filter((flow) => flow !== flowType);
 	};
 
-	const removeFlow = (index: number) => {
-		if (!data.hasOwnProperty('flows')) {
-			return;
-		}
-		let tempData = data;
-		// @ts-expect-error - this is only called when data.flows exists
-		tempData.flows.splice(index, 1);
-		data = tempData;
+	const removeOauthFlow = (flow: string) => {
+		// @ts-expect-error - security schema definition is lacking a bit
+		let tempFlows = schema.flows;
+		delete tempFlows[flow];
+		// @ts-expect-error - security schema definition is lacking a bit
+		schema.flows = tempFlows;
+
+		// add flow back to availableFlows
+		availableFlows = [...availableFlows, flow];
 	};
 </script>
 
-<div class="flex flex-col gap-2"></div>
-<div class="space-y-4">
-	{#if data.type == 'http' && data.scheme == 'basic'}
-		<h3 class="h3">Basic Auth</h3>
-		<p>Basic authentication is a simple authentication scheme built into the HTTP protocol.</p>
-		<label class="space-y-2">
-			<h4 class="h4">Unique name for the security scheme</h4>
-			<input class="input" type="text" placeholder="basicAuth" bind:value={data.identifier} />
-		</label>
-	{:else if data.type == 'http' && data.scheme == 'bearer'}
-		<h3 class="h3">Bearer Auth</h3>
-		<p>Basic authentication is a simple authentication scheme built into the HTTP protocol.</p>
-		<label class="space-y-2">
-			<h4 class="h4">Unique name for the security scheme</h4>
-			<input class="input" type="text" placeholder="bearerAuth" bind:value={data.identifier} />
-		</label>
-		<label class="space-y-2">
-			<h4 class="h4">Format: arbitrary string for documentation purposes</h4>
-			<input class="input" type="text" placeholder="JWT" bind:value={data.identifier} />
-		</label>
-	{:else if data.type == 'apiKey' && data.in == 'header'}
-		<!-- Cookie API Keys handled by CookieAuth -->
-		<h3 class="h3">API Key</h3>
+<div class="space-y-2">
+	{#if schema.type === 'http' && schema.scheme === 'basic'}
+		<h3 class="h3">Basic Authentication</h3>
 		<p>
-			API keys are a simple authentication method that the client provides when making API requests.
+			Basic authentication is a simple authentication scheme built into the HTTP protocol. No
+			configuration required.
 		</p>
-		<label class="space-y-2">
-			<h4 class="h4">Unique name for the security scheme</h4>
-			<input class="input" type="text" placeholder="apiKeyAuth" bind:value={data.identifier} />
-		</label>
-		<label class="space-y-2">
-			<h4 class="h4">Location</h4>
-			<select class="input">
-				<option value="header" selected>Header</option>
-				<option value="query">Query</option>
-			</select>
-		</label>
-		<label class="space-y-2">
-			<h4 class="h4">Name (required)</h4>
-			<input class="input" type="text" placeholder="X-API-Key" />
-		</label>
-	{:else if data.type == 'openIdConnect'}
-		<h3 class="h3">OpenID</h3>
+	{:else if schema.type === 'http' && schema.scheme === 'bearer'}
+		<h3 class="h3">Bearer Authentication</h3>
 		<p>
-			OpenID Connect (OIDC) is an identity layer built on top of the OAuth 2.0 protocol and
-			supported by some OAuth 2.0 providers, such as Google and Azure Active Directory.
+			Bearer authentication (also called token authentication) is an HTTP authentication scheme that
+			involves security tokens called bearer tokens.
 		</p>
-		<label class="space-y-2">
-			<h4 class="h4">Unique name for the security scheme</h4>
-			<input class="input" type="text" placeholder="openIdAuth" bind:value={data.identifier} />
+		<label>
+			<h5 class="h5">Description</h5>
+			<p class="text-sm">Human-readable information. May contain Markdown.</p>
+			<textarea class="textarea" placeholder="Description" />
 		</label>
 		<label>
-			<h4 class="h4">OpenID Connect URL</h4>
+			<h5 class="h5">Bearer format</h5>
+			<p class="text-sm">A hint to the client to identify how the bearer token is formatted.</p>
+			<input type="text" class="input" placeholder="JWT" />
+		</label>
+	{:else if schema.type === 'apiKey'}
+		<h3 class="h3">API Key Authentication</h3>
+		<label>
+			<h5 class="h5">Location</h5>
+			<select class="input">
+				<option value="header">header</option>
+				<option value="query">query</option>
+				<option value="cookie">cookie</option>
+			</select>
+		</label>
+		<label>
+			<h5 class="h5">Name</h5>
+			<p class="text-sm">The name of the key parameter in the location.</p>
+			<input type="text" class="input" placeholder="api_key" />
+		</label>
+		<label>
+			<h5 class="h5">Description</h5>
+			<p class="text-sm">Human-readable information. May contain Markdown.</p>
+			<textarea class="textarea" placeholder="Description" />
+		</label>
+	{:else if schema.type === 'openIdConnect'}
+		<h3 class="h3">OpenID Connect Authentication</h3>
+		<label>
+			<h5 class="h5">OpenID Connect URL</h5>
+			<p class="text-sm">The URL must point to a JSON OpenID Connect Discovery document.</p>
 			<input
-				class="input"
 				type="url"
+				class="input"
 				placeholder="https://example.com/.well-known/openid-configuration"
 			/>
 		</label>
-	{:else if data.type == 'oauth2'}
-		<h3 class="h3">OAuth2</h3>
-		<p>
-			OAuth 2.0 is an authorization protocol that gives an API client limited access to user data on
-			a web server.
-		</p>
-		<label class="space-y-2">
-			<h4 class="h4">Unique name for the security scheme</h4>
-			<input class="input" type="text" placeholder="oAuth" bind:value={data.identifier} />
+		<label>
+			<h5 class="h5">Description</h5>
+			<p class="text-sm">Human-readable information. May contain Markdown.</p>
+			<textarea class="textarea" placeholder="Description" />
 		</label>
-		<label class="space-y-2">
-			<h4 class="h4">Description</h4>
-			<textarea
-				class="input rounded-container-token"
-				placeholder="OAuth2 Authorization Description"
-			/>
+	{:else if schema.type === 'oauth2'}
+		<h3 class="h3">Oauth2 Authentication</h3>
+		<label>
+			<h5 class="h5">Description</h5>
+			<p class="text-sm">Human-readable information. May contain Markdown.</p>
+			<textarea class="textarea" placeholder="Description" />
 		</label>
-		{#each data.flows as flow, index}
-			<OAuthFlow bind:flow />
-			<span class="flex justify-center">
+
+		<h5 class="h5">Flows</h5>
+		{#each Object.keys(schema.flows) as flow}
+			<div class="flex w-full justify-between items-center">
+				<h6 class="h6">{flow.charAt(0).toLocaleUpperCase() + flow.slice(1)}</h6>
+
 				<button
 					type="button"
-					class="btn variant-ringed-error hover:variant-filled-error"
-					on:click={() => {
-						removeFlow(index);
-					}}
+					class="btn btn-sm variant-ringed-error hover:variant-filled-error"
+					on:click={() => removeOauthFlow(flow)}
 				>
-					Remove Flow
+					Remove {flow}
 				</button>
-			</span>
-			<hr />
+			</div>
+			<OAuthFlow type={flow} flow={schema.flows[flow]} />
 		{/each}
-		<span class="flex justify-center items-center gap-2 max-w-md mx-auto">
-			<select class="input" bind:value={oauthFlow}>
-				<option value="authorizationCode">Authorization Code</option>
-				<option value="implicit">Implicit</option>
-				<option value="password">Password</option>
-				<option value="clientCredentials">Client Credentials</option>
+
+		<span class="w-full flex justify-center gap-2">
+			<select class="input w-min" bind:value={flowType}>
+				{#each availableFlows as flow}
+					<option value={flow}>{flow}</option>
+				{/each}
 			</select>
-			<button type="button" class="btn variant-filled-primary" on:click={addOAuthFlow}>
-				Add OAuth2 Flow
+			<button type="button" class="btn btn-sm variant-filled-primary" on:click={addOauthFlow}>
+				Add Flow
 			</button>
 		</span>
-	{:else if data.type == 'apiKey' && data.in == 'cookie'}
-		<h3 class="h3">Cookie Auth</h3>
-		<p>
-			Cookie authentication uses HTTP cookies to authenticate client requests and maintain session
-			information.
-		</p>
-		<label class="space-y-2">
-			<h4 class="h4">Unique name for the security scheme</h4>
-			<input class="input" type="text" placeholder="cookieAuth" bind:value={data.identifier} />
-		</label>
-		<label class="space-y-2">
-			<h4 class="h4">Cookie Name (required)</h4>
-			<input class="input" type="text" placeholder="JSESSIONID" />
-		</label>
 	{/if}
 </div>

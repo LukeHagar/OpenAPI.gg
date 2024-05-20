@@ -1,10 +1,9 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import { openApiStore } from '$lib';
 	import {
 		apiKeyAuthTemplate,
 		basicAuthTemplate,
 		bearerAuthTemplate,
-		cookieAuthTemplate,
 		oauth2AuthTemplate,
 		openIdAuthTemplate
 	} from '$lib/authTemplates';
@@ -12,7 +11,7 @@
 
 	let selectedSchema: string;
 	const addSecuritySchema = () => {
-		let tempSchemaList = $openApiStore.securitySchemas;
+		let tempSchemaList = $openApiStore.security;
 		let newSchema;
 		switch (selectedSchema) {
 			case 'basicAuth':
@@ -30,9 +29,6 @@
 			case 'oAuthSample':
 				newSchema = oauth2AuthTemplate;
 				break;
-			case 'cookieAuth':
-				newSchema = cookieAuthTemplate;
-				break;
 			default:
 				newSchema = undefined;
 				break;
@@ -40,30 +36,34 @@
 
 		if (newSchema) {
 			tempSchemaList = [...tempSchemaList, newSchema];
-			$openApiStore.securitySchemas = tempSchemaList;
+			$openApiStore.security = tempSchemaList;
 		}
 	};
 	const removeSecuritySchema = (index: number) => {
-		let tempSchemaList = $openApiStore.securitySchemas;
+		let tempSchemaList = $openApiStore.security;
 		tempSchemaList.splice(index, 1);
-		$openApiStore.securitySchemas = tempSchemaList;
+		$openApiStore.security = tempSchemaList;
 	};
 </script>
 
-<form class="container mx-auto card px-6 py-4 space-y-4">
-	{#each $openApiStore.securitySchemas as schema, index}
-		<AuthenticationItem bind:data={schema} />
-		<span class="flex justify-center">
-			<button
-				type="button"
-				class="btn variant-ringed-error hover:variant-filled-error"
-				on:click={() => {
-					removeSecuritySchema(index);
-				}}
-			>
-				Remove Security Schema
-			</button>
-		</span>
+<form
+	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 space-y-4"
+>
+	{#each $openApiStore.security as schema, index}
+		<div class="card w-full p-4">
+			<div class="flex flex-row-reverse w-full">
+				<button
+					type="button"
+					class="btn btn-sm variant-ringed-error hover:variant-filled-error"
+					on:click={() => {
+						removeSecuritySchema(index);
+					}}
+				>
+					Remove schema
+				</button>
+			</div>
+			<AuthenticationItem bind:schema />
+		</div>
 		<hr />
 	{/each}
 
@@ -74,10 +74,9 @@
 			<option value="ApiKeyAuth">API Key Auth</option>
 			<option value="openId">OpenID</option>
 			<option value="oAuthSample">OAuth2</option>
-			<option value="cookieAuth">Cookie Auth</option>
 		</select>
 		<button type="button" class="btn variant-filled-primary" on:click={addSecuritySchema}>
 			Add Security Schema
 		</button>
 	</span>
-</form> -->
+</form>

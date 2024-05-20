@@ -1,71 +1,49 @@
-import type {
-	ApiKeyAuth,
-	BasicAuth,
-	BearerAuth,
-	CookieAuth,
-	OAuth2Auth,
-	OpenIdConnectAuth
-} from './types/auth';
+import type { OpenAPIV3_1 } from './openAPITypes';
 
-export const basicAuthTemplate: BasicAuth = {
-	identifier: '',
+export const basicAuthTemplate: OpenAPIV3_1.HttpSecurityScheme = {
 	type: 'http',
-	scheme: 'basic'
+	scheme: 'basic',
+	description: undefined
 };
 
-export const bearerAuthTemplate: BearerAuth = {
-	identifier: '',
+export const bearerAuthTemplate: OpenAPIV3_1.HttpSecurityScheme = {
 	type: 'http',
 	scheme: 'bearer',
-	bearerFormat: ''
+	bearerFormat: undefined,
+	description: undefined
 };
 
-export const apiKeyAuthTemplate: ApiKeyAuth = {
-	identifier: '',
+export const apiKeyAuthTemplate: OpenAPIV3_1.ApiKeySecurityScheme = {
 	type: 'apiKey',
-	in: 'header',
-	name: ''
+	in: 'header', // or 'query' or 'cookie'
+	name: '',
+	description: undefined
 };
 
-export const openIdAuthTemplate: OpenIdConnectAuth = {
-	identifier: '',
+export const openIdAuthTemplate: OpenAPIV3_1.OpenIdSecurityScheme = {
 	type: 'openIdConnect',
-	openIdConnectUrl: ''
+	openIdConnectUrl: '',
+	description: undefined
 };
 
-export const oauth2AuthTemplate: OAuth2Auth = {
-	identifier: '',
+export const oauth2AuthTemplate: OpenAPIV3_1.OAuth2SecurityScheme = {
 	type: 'oauth2',
-	description: '',
-	flows: []
+	flows: {},
+	description: undefined
 };
 
-export const cookieAuthTemplate: CookieAuth = {
-	identifier: '',
-	type: 'apiKey',
-	in: 'cookie',
-	name: ''
+const baseOauth2Flow: Oauth2.Oauth2Flow = {
+	authorizationUrl: '',
+	scopes: {},
+	refreshUrl: undefined
 };
 
-export const oauth2FlowTemplates = {
+export const oauth2FlowTemplates: Oauth2.Oauth2FlowTemplates = {
+	implicit: baseOauth2Flow,
+	password: baseOauth2Flow,
+	clientCredentials: baseOauth2Flow,
 	authorizationCode: {
-		name: 'authorizationCode',
-		authorizationUrl: '',
-		tokenUrl: '',
-		scopes: []
-	},
-	implicit: {
-		name: 'implicit',
-		authorizationUrl: '',
-		scopes: []
-	},
-	password: {
-		name: 'password',
-		tokenUrl: '',
-		scopes: []
-	},
-	clientCredentials: {
-		name: 'clientCredentials',
+		...baseOauth2Flow,
 		tokenUrl: ''
 	}
 };

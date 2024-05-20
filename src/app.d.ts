@@ -7,3 +7,18 @@ declare namespace App {
 	// interface Error {}
 	// interface Platform {}
 }
+
+declare namespace Oauth2 {
+	interface Oauth2Flow {
+		authorizationUrl: string;
+		scopes: Record<string, string>;
+		refreshUrl?: string;
+	}
+
+	interface Oauth2FlowTemplates {
+		implicit: Oauth2Flow;
+		password: Oauth2Flow;
+		clientCredentials: Oauth2Flow;
+		authorizationCode: Oauth2Flow & { tokenUrl: string };
+	}
+}

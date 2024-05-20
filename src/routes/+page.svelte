@@ -29,7 +29,7 @@
 		{#if $tabSet === 0}
 			<Info />
 		{:else if $tabSet === 1}
-			<!-- <Authentication /> -->
+			<Authentication />
 		{:else if $tabSet === 2}
 			<Servers />
 		{:else if $tabSet === 3}
