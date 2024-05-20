@@ -32,6 +32,7 @@
 					if (confirm('Are you sure you want to reset ALL current inputs?')) {
 						// remove `openApi` from localStorage
 						localStorage.removeItem(`${localStoragePrefix}openApi`);
+						window.location.reload();
 					}
 				}}
 			>

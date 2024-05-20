@@ -1,18 +1,45 @@
 <script lang="ts">
-	import { InputChip, popup, type PopupSettings } from '@skeletonlabs/skeleton';
+	import { InputChip } from '@skeletonlabs/skeleton';
 	import Info from '../icons/Info.svelte';
-	import type { OpenAPIV3 } from '$lib/openAPITypes';
+	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
 
 	export let id: number;
-	export let server: OpenAPIV3.ServerObject;
+	export let server: OpenAPIV3_1.ServerObject;
 
-	const descriptionTooltip: PopupSettings = {
-		event: 'click',
-		target: `descriptionTooltip${id}`,
-		placement: 'top'
+	const variableRegex = /\{([^}]+)\}/gm;
+	const addVariables = () => {
+		if (!server.url) return;
+
+		const matches = server.url.match(variableRegex);
+
+		if (!matches) {
+			server.variables = undefined;
+			return;
+		}
+
+		// If there are variables in the URL, create an object to store them
+		if (!server.variables) server.variables = {};
+
+		// check if matches contains duplicates
+		const uniqueMatches = [...new Set(matches)];
+		if (uniqueMatches.length !== matches.length) {
+			// TODO: find a better way to alert the user
+			alert('Duplicate variables found in URL. Please remove duplicates.');
+			return;
+		}
+
+		// we now know that the matches are unique
+		// so we can create the variables object
+		server.variables = uniqueMatches.reduce((acc, match) => {
+			// @ts-expect-error - we want to dynamically create the object keys
+			acc[match.replace('{', '').replace('}', '')] = {
+				default: '',
+				description: '',
+				enum: []
+			};
+			return acc;
+		}, {});
 	};
-
-	const variableRegex = /\{([^}]+)\}/g;
 </script>
 
 <div class="space-y-4">
@@ -24,30 +51,14 @@
 			placeholder="https://&lbrace;id&rbrace;.api.example.com/v1"
 			type="url"
 			bind:value={server.url}
-			on:input={() => {
-				if (!server.url) return;
-
-				const matches = server.url.match(variableRegex);
-
-				if (!matches) {
-					server.variables = null;
-					return;
-				}
-
-				server.variables = matches.reduce((variables, match) => {
-					const variable = match.slice(1, -1);
-					if (!variables[variable]) variables[variable] = { default: '', description: '' };
-					return variables;
-				}, {});
-			}}
-		
+			on:input={addVariables}
 		/>
 	</label>
 
 	<label class="space-y-2">
 		<span>
 			Description
-			<button type="button" use:popup={descriptionTooltip}>
+			<button type="button">
 				<Info />
 			</button>
 		</span>
@@ -61,12 +72,16 @@
 	<div class="border-token rounded-container-token space-y-4 p-4">
 		<div>
 			<h4 class="h4">Variables</h4>
-			<p class="text-sm">Define variables by adding them to the server URL using curly-braces like so: <code>&lbrace;id&rbrace;</code>.</p>
+			<p class="text-sm">
+				Define variables by adding them to the server URL using curly-braces like so: <code
+					>&lbrace;id&rbrace;</code
+				>.
+			</p>
 		</div>
 		{#if server.variables}
 			<table class="table">
 				<tbody>
-					{#each Object.keys(server.variables) as variable}
+					{#each Object.keys(server.variables) as variable, index}
 						<tr>
 							<td class="text-center">
 								<div class="flex justify-center items-center">
@@ -94,7 +109,7 @@
 									<InputChip
 										bind:value={server.variables[variable].enum}
 										name="enum"
-										placeholder="enum (optional)"
+										placeholder="enum (optional) - press enter to add more items"
 									/>
 								</div>
 							</td>

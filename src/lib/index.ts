@@ -1,9 +1,9 @@
 import { persisted } from 'svelte-persisted-store';
-import type { OpenAPIV3 } from './openAPITypes';
+import type { OpenAPIV3_1 } from './openAPITypes';
 
 export const localStoragePrefix = 'openapigen-';
 
-export const openApiStore = persisted<OpenAPIV3.Document>(`${localStoragePrefix}openApi`, {
+export const openApiStore = persisted<OpenAPIV3_1.Document>(`${localStoragePrefix}openApi`, {
 	openapi: '3.0.0', // OpenAPI version
 	info: {
 		/** Title of the API (required) */
