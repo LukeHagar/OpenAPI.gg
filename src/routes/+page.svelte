@@ -4,6 +4,7 @@
 	import { TabGroup, Tab } from '@skeletonlabs/skeleton';
 	import { persisted } from 'svelte-persisted-store';
 	import Authentication from '$lib/components/sections/Authentication.svelte';
+	import Paths from '$lib/components/sections/Paths.svelte';
 
 	// let tabSet: number = 0;
 	const tabSet = persisted<number>('tabSet', 0);
@@ -33,7 +34,7 @@
 		{:else if $tabSet === 2}
 			<Servers />
 		{:else if $tabSet === 3}
-			<p>Paths</p>
+			<Paths />
 		{:else if $tabSet === 4}
 			<p>Components</p>
 		{/if}

@@ -7,14 +7,14 @@ export const openApiStore = persisted<OpenAPIV3_1.Document>(`${localStoragePrefi
 	openapi: '3.0.0', // OpenAPI version
 	info: {
 		/** Title of the API (required) */
-		title: '', 
+		title: '',
 		/** Description of the API (optional) */
 		description: '',
 		/** Terms of service link (optional) */
 		termsOfService: '',
 		/** API Version (required) */
 		version: '',
-		/** Contact Information */ 
+		/** Contact Information */
 		contact: {
 			/** Name of the contact person/organization. */
 			name: '', // optional
