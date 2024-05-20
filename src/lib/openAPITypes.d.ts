@@ -11,6 +11,7 @@ export namespace OpenAPIV3 {
 		security?: SecurityRequirementObject[];
 		tags?: TagObject[];
 		externalDocs?: ExternalDocumentationObject;
+		[extension: string]: any;
 		'x-express-openapi-additional-middleware'?: (
 			| ((request: any, response: any, next: any) => Promise<void>)
 			| ((request: any, response: any, next: any) => void)
@@ -19,20 +20,25 @@ export namespace OpenAPIV3 {
 	}
 	interface InfoObject {
 		title: string;
-		description: string;
-		termsOfService: string;
-		contact: ContactObject;
-		license: LicenseObject;
 		version: string;
+		summary?: string;
+		description?: string;
+		contact?: ContactObject;
+		license?: LicenseObject;
+		termsOfService?: string;
+		[extension: string]: any;
 	}
 	interface ContactObject {
 		name?: string;
 		url?: string;
 		email?: string;
+		[extension: string]: any;
 	}
 	interface LicenseObject {
 		name: string;
 		url?: string;
+		identifier?: string;
+		[extension: string]: any;
 	}
 	interface ServerObject {
 		url: string;

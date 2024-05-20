@@ -19,7 +19,7 @@
 		</svelte:fragment>
 		<svelte:fragment slot="trail">
 			<a
-				href="https://swagger.io/docs/specification/basic-structure/"
+				href="https://www.speakeasyapi.dev/openapi"
 				target="_blank"
 				class="btn variant-filled-surface"
 			>

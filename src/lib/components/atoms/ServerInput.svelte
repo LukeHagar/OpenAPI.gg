@@ -12,38 +12,41 @@
 		placement: 'top'
 	};
 
-	const addVariable = () => {
-		// if server has no variables, add a variable-object
-		if (!server.variables) {
-			const variable = prompt('Enter variable name');
-			if (!variable) return;
-			server.variables = {
-				[variable]: {
-					default: '',
-					description: '',
-					enum: []
-				}
-			};
-		}
-	};
+	const variableRegex = /\{([^}]+)\}/g;
 </script>
 
 <div class="space-y-4">
 	<label class="space-y-2">
 		<span>URL (required)</span>
-		<p>You can add parameters using curly-braces like so: <code>&lbrace;id&rbrace;</code></p>
 		<input
 			class="input"
 			name="url{id}"
 			placeholder="https://&lbrace;id&rbrace;.api.example.com/v1"
 			type="url"
 			bind:value={server.url}
+			on:input={() => {
+				if (!server.url) return;
+
+				const matches = server.url.match(variableRegex);
+
+				if (!matches) {
+					server.variables = null;
+					return;
+				}
+
+				server.variables = matches.reduce((variables, match) => {
+					const variable = match.slice(1, -1);
+					if (!variables[variable]) variables[variable] = { default: '', description: '' };
+					return variables;
+				}, {});
+			}}
+		
 		/>
 	</label>
 
 	<label class="space-y-2">
 		<span>
-			Description (optional)
+			Description
 			<button type="button" use:popup={descriptionTooltip}>
 				<Info />
 			</button>
@@ -57,8 +60,8 @@
 	</label>
 	<div class="border-token rounded-container-token space-y-4 p-4">
 		<div>
-			<h4 class="h4">Variables (optional)</h4>
-			<p>Define variables for the server URL.</p>
+			<h4 class="h4">Variables</h4>
+			<p class="text-sm">Define variables by adding them to the server URL using curly-braces like so: <code>&lbrace;id&rbrace;</code>.</p>
 		</div>
 		{#if server.variables}
 			<table class="table">
@@ -67,7 +70,7 @@
 						<tr>
 							<td class="text-center">
 								<div class="flex justify-center items-center">
-									<p class="text-xl">{variable}</p>
+									<p class="text-lg">{variable}</p>
 								</div>
 							</td>
 							<td>
@@ -87,7 +90,7 @@
 								/>
 							</td>
 							<td class="!w-1/3">
-								<div >
+								<div>
 									<InputChip
 										bind:value={server.variables[variable].enum}
 										name="enum"
@@ -100,10 +103,5 @@
 				</tbody>
 			</table>
 		{/if}
-		<span class="flex justify-center">
-			<button type="button" class="btn btn-sm variant-filled-primary" on:click={addVariable}>
-				Add Variable
-			</button>
-		</span>
 	</div>
 </div>
