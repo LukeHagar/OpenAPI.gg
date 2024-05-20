@@ -1,5 +1,5 @@
 - [x] Add path renaming
-- [ ] Add path sub-page for editing a specific route
+- [x] Add path sub-page for editing a specific route
 - [ ] Check that a path variable can only be included once
 - [ ] Add schema editor component
 - [ ] Add route-parameters
@@ -56,3 +56,7 @@
 
 - [ ] Replace prompt, alert and confirms with skeleton-modals
 - [ ] Add extensions
+
+---
+
+- [ ] Add integration test(s) to check functionality
