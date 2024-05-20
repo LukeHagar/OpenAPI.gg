@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { openApiStore } from '$lib';
+	import { openApiStore, pathRegex, sortPathsAlphabetically } from '$lib';
 	import { pathTemplate } from '$lib/pathTemplate';
 	import PathListItem from '../atoms/PathListItem.svelte';
 
 	// match path with parameters
-	const pathRegex = /\/([\/]*[\{]?[a-zA-Z]+[\}]?)*/gm;
 
 	// add path
 	const addPath = () => {
@@ -27,29 +26,14 @@
 		}
 
 		// create a temporary object to store paths
-		let tempPathObject = {
-			...$openApiStore.paths
+		// add path to paths object
+		$openApiStore.paths = {
+			...$openApiStore.paths,
+			[path]: pathTemplate
 		};
-
-		tempPathObject[path] = pathTemplate;
-
-		// update paths in store
-		$openApiStore.paths = tempPathObject;
 
 		// sort paths alphabetically
 		sortPathsAlphabetically();
-	};
-
-	const sortPathsAlphabetically = () => {
-		let tempPathObject = {};
-		// @ts-expect-error - we are working with an initially empty object
-		Object.keys($openApiStore.paths)
-			.sort()
-			.forEach((key) => {
-				// @ts-expect-error - we are working with initially empty objects
-				tempPathObject[key] = $openApiStore.paths[key];
-			});
-		$openApiStore.paths = tempPathObject;
 	};
 </script>
 
