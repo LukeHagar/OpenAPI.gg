@@ -1,4 +1,4 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import { openApiStore } from '$lib';
 	import ServerInput from '../atoms/ServerInput.svelte';
 
@@ -28,7 +28,7 @@
 						Remove Server
 					</button>
 				</span>
-				<ServerInput id={1} bind:url={server.url} bind:description={server.description} />
+				<ServerInput id={1} bind:server />
 			</li>
 			{#if index < $openApiStore.servers.length - 1}
 				<hr />
@@ -40,4 +40,4 @@
 			Add Server
 		</button>
 	</span>
-</form> -->
+</form>

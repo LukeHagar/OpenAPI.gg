@@ -5,7 +5,7 @@ export namespace OpenAPIV3 {
 	interface Document<T extends {} = {}> {
 		openapi: string;
 		info: InfoObject;
-		servers?: ServerObject[];
+		servers: ServerObject[];
 		paths: PathsObject<T>;
 		components?: ComponentsObject;
 		security?: SecurityRequirementObject[];

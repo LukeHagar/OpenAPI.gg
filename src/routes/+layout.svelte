@@ -5,6 +5,7 @@
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
+	import { localStoragePrefix } from '$lib';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
 
@@ -24,6 +25,18 @@
 			>
 				Schema Reference
 			</a>
+			<button
+				type="button"
+				class="btn variant-ringed-error hover:variant-filled-error"
+				on:click={() => {
+					if (confirm('Are you sure you want to reset ALL current inputs?')) {
+						// remove `openApi` from localStorage
+						localStorage.removeItem(`${localStoragePrefix}openApi`);
+					}
+				}}
+			>
+				Reset Inputs
+			</button>
 		</svelte:fragment>
 	</AppBar>
 	<div class="mx-8 my-4">

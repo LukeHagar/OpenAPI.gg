@@ -31,7 +31,7 @@
 		{:else if $tabSet === 1}
 			<!-- <Authentication /> -->
 		{:else if $tabSet === 2}
-			<!-- <Servers /> -->
+			<Servers />
 		{:else if $tabSet === 3}
 			<p>Paths</p>
 		{:else if $tabSet === 4}
