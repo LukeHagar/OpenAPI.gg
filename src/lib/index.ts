@@ -5,7 +5,7 @@ import { get } from 'svelte/store';
 export const localStoragePrefix = 'openapigen-';
 
 export const openApiStore = persisted<OpenAPIV3_1.Document>(`${localStoragePrefix}openApi`, {
-	openapi: '3.0.0', // OpenAPI version
+	openapi: '3.1.0', // OpenAPI version
 	info: {
 		/** Title of the API (required) */
 		title: '',

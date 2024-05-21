@@ -14,7 +14,7 @@
 		<svelte:fragment slot="lead">
 			<h4 class="h4">
 				OpenAPI generator
-				<code class="ml-2 variant-filled-success p-1 px-2 rounded-container-token"> 3.0.0 </code>
+				<code class="ml-2 variant-filled-success p-1 px-2 rounded-container-token"> 3.1.0 </code>
 			</h4>
 		</svelte:fragment>
 		<svelte:fragment slot="trail">
