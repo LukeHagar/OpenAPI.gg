@@ -7,7 +7,13 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { localStoragePrefix } from '$lib';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
+	// Modal
+	import { initializeStores, Modal } from '@skeletonlabs/skeleton';
+	initializeStores();
 </script>
+
+<Modal />
 
 <div class="w-full h-full">
 	<AppBar>

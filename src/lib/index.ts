@@ -1,6 +1,5 @@
 import { persisted } from 'svelte-persisted-store';
 import type { OpenAPIV3_1 } from './openAPITypes';
-import { get } from 'svelte/store';
 
 export const localStoragePrefix = 'openapigen-';
 
@@ -40,22 +39,5 @@ export const openApiStore = persisted<OpenAPIV3_1.Document>(`${localStoragePrefi
 	}
 });
 
-export const pathRegex = /\/([/]*[{]?[a-zA-Z]+[}]?)*/gm;
-
-export const sortPathsAlphabetically = () => {
-	const tempPathObject = {};
-	const store = get(openApiStore);
-	// @ts-expect-error - we are working with an initially empty object
-	Object.keys(store.paths)
-		.sort()
-		.forEach((key) => {
-			// @ts-expect-error - we are working with initially empty objects
-			tempPathObject[key] = store.paths[key];
-		});
-
-	// update path object
-	openApiStore.update((data) => {
-		data.paths = tempPathObject;
-		return data;
-	});
-};
+// export path handling functions
+export * from './pathHandling';

@@ -1,6 +1,6 @@
 - [x] Add path renaming
 - [x] Add path sub-page for editing a specific route
-- [ ] Check that a path variable can only be included once
+- [x] Check that a path variable can only be included once
 - [ ] Add schema editor component
 - [ ] Add route-parameters
   - [ ] path
@@ -55,6 +55,10 @@
 ---
 
 - [ ] Replace prompt, alert and confirms with skeleton-modals
+  - [x] Create path prompt
+  - [x] Edit path prompt
+  - [x] Rename path prompt
+  - [x] Delete path confirm
 - [ ] Add extensions
 
 ---
