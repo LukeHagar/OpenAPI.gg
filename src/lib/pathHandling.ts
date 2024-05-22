@@ -140,7 +140,7 @@ export const isValidPath = (path: string) => {
 	const pathRegex = /(\/[a-zA-Z-]+)+|\//gm;
 	const pathParts = pathWithoutVariables.match(pathRegex);
 	// the fallback is to return false if the pathParts array is null
-	return pathParts?.length === 1 ?? false;
+	return pathParts?.length === 1 ? true : false;
 };
 
 /// sorts the paths in the OpenAPI document alphabetically

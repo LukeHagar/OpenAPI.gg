@@ -16,24 +16,24 @@
 <Modal />
 
 <div class="w-full h-full">
-	<AppBar>
+	<AppBar padding="p-2">
 		<svelte:fragment slot="lead">
-			<h4 class="h4">
+			<h1>
 				OpenAPI generator
-				<code class="ml-2 variant-filled-success p-1 px-2 rounded-container-token"> 3.1.0 </code>
-			</h4>
+				<code class="text-xs ml-2 variant-filled-success p-1 px-2 rounded-container-token"> 3.1.0 </code>
+			</h1>
 		</svelte:fragment>
 		<svelte:fragment slot="trail">
 			<a
 				href="https://www.speakeasyapi.dev/openapi"
 				target="_blank"
-				class="btn variant-filled-surface"
+				class="btn variant-filled-surface btn-sm hover:variant-filled-primary"
 			>
 				Schema Reference
 			</a>
 			<button
 				type="button"
-				class="btn variant-ringed-error hover:variant-filled-error"
+				class="btn variant-ringed-error btn-sm hover:variant-filled-error"
 				on:click={() => {
 					if (confirm('Are you sure you want to reset ALL current inputs?')) {
 						// remove `openApi` from localStorage
