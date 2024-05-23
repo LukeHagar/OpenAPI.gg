@@ -38,8 +38,7 @@
 	};
 </script>
 
-<div class="card p-4 space-y-4">
-	<a href="/paths"> {`<-`} Back </a>
+<div class="border-token rounded-container-token bg-surface-backdrop-token p-4 space-y-4">
 	<h1>{data.pathName}</h1>
 	<label class="space-y-1">
 		<h5 class="h5">Summary</h5>
