@@ -10,7 +10,14 @@
 		<h4 class="h4">License</h4>
 		<label class="text-sm flex flex-col space-y-2">
 			<span>Pick a license</span>
-			<select class="select w-56 text-sm" bind:value={$openApiStore.info.license.identifier}>
+			<select
+				class="select w-56 text-sm"
+				bind:value={$openApiStore.info.license.identifier}
+				on:change={() => {
+					$openApiStore.info.license.name =
+						spdxLicenseList[$openApiStore.info.license.identifier].name;
+				}}
+			>
 				<optgroup label="Popular Licenses">
 					{#each Object.keys(spdxLicenseList).filter( (entry) => popularLicenses.includes(entry) ) as license}
 						<option value={license}>{spdxLicenseList[license].name}</option>
