@@ -47,7 +47,7 @@
 </script>
 
 <form
-	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 space-y-4"
+	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 min-h-20 space-y-4"
 >
 	{#each $openApiStore.security as schema, index}
 		<div class="card w-full p-4">
@@ -68,14 +68,14 @@
 	{/each}
 
 	<span class="flex justify-center items-center gap-2 max-w-sm mx-auto">
-		<select name="security-schema" bind:value={selectedSchema} class="input w-fit">
+		<select name="security-schema" bind:value={selectedSchema} class="input w-fit text-sm">
 			<option value="basicAuth" selected>Basic Auth</option>
 			<option value="bearerAuth">Bearer Auth</option>
 			<option value="ApiKeyAuth">API Key Auth</option>
 			<option value="openId">OpenID</option>
 			<option value="oAuthSample">OAuth2</option>
 		</select>
-		<button type="button" class="btn variant-filled-primary" on:click={addSecuritySchema}>
+		<button type="button" class="btn text-sm variant-filled-primary" on:click={addSecuritySchema}>
 			Add Security Schema
 		</button>
 	</span>

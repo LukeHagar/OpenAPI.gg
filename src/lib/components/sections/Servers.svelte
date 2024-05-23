@@ -23,7 +23,9 @@
 	};
 </script>
 
-<form class="container mx-auto card px-6 py-4 space-y-6">
+<form
+	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 min-h-20 space-y-6"
+>
 	<!-- If openApiStore.servers isnt an array show add button -->
 	{#if Array.isArray($openApiStore.servers)}
 		<ul class="list space-y-6">
@@ -46,13 +48,13 @@
 			{/each}
 		</ul>
 		<span class="flex justify-center" class:!mt-0={$openApiStore.servers.length === 0}>
-			<button type="button" class="btn variant-filled-primary" on:click={addServer}>
+			<button type="button" class="btn text-sm variant-filled-primary" on:click={addServer}>
 				Add Server
 			</button>
 		</span>
 	{:else}
 		<span class="flex justify-center mt-0">
-			<button type="button" class="btn variant-filled-primary" on:click={addServer}>
+			<button type="button" class="btn text-sm variant-filled-primary" on:click={addServer}>
 				Add Server
 			</button>
 		</span>

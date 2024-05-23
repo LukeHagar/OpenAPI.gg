@@ -3,7 +3,7 @@
 	import { openApiStore, pathRegex, sortPathsAlphabetically } from '$lib';
 	import { pathTemplate } from '$lib/pathTemplate';
 	import PathListItem from '../atoms/PathListItem.svelte';
-	import AddPathButtons from '../atoms/AddPathButtons.svelte';
+	import PathButtons from '../atoms/PathButtons.svelte';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 
 	const modalStore = getModalStore();
@@ -43,17 +43,17 @@
 </script>
 
 <div
-	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 space-y-3"
+	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 min-h-20 space-y-3"
 >
 	{#if Object.keys($openApiStore.paths).length > 0}
-		<AddPathButtons />
+		<PathButtons />
 		<hr />
 		{#each Object.keys($openApiStore.paths) as pathName, index}
 			<PathListItem {pathName} id={index} />
 		{/each}
-		
-		<AddPathButtons />
-		{:else}
-		<AddPathButtons justify="justify-center" sort={false} />
+
+		<PathButtons />
+	{:else}
+		<PathButtons justify="justify-center" sort={false} />
 	{/if}
 </div>
