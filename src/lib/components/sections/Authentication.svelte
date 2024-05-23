@@ -68,7 +68,7 @@
 	{/each}
 
 	<span class="flex justify-center items-center gap-2 max-w-sm mx-auto">
-		<select name="security-schema" bind:value={selectedSchema} class="input">
+		<select name="security-schema" bind:value={selectedSchema} class="input w-fit">
 			<option value="basicAuth" selected>Basic Auth</option>
 			<option value="bearerAuth">Bearer Auth</option>
 			<option value="ApiKeyAuth">API Key Auth</option>
