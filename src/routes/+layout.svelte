@@ -20,7 +20,9 @@
 		<svelte:fragment slot="lead">
 			<h1>
 				OpenAPI generator
-				<code class="text-xs ml-2 variant-filled-success p-1 px-2 rounded-container-token"> 3.1.0 </code>
+				<code class="text-xs ml-2 variant-filled-success p-1 px-2 rounded-container-token">
+					3.1.0
+				</code>
 			</h1>
 		</svelte:fragment>
 		<svelte:fragment slot="trail">
@@ -47,7 +49,38 @@
 			</button>
 		</svelte:fragment>
 	</AppBar>
-	<div class="mx-8 my-4">
-		<slot />
+	<div class="flex flex-row w-full">
+		<nav class="list-nav">
+			<!-- (optionally you can provide a label here) -->
+			<ul>
+				<li class="">
+					<a href="/info">
+						<!-- <span class="badge bg-primary-500">(icon)</span> -->
+						<span class="flex-auto">Info</span>
+					</a>
+				</li>
+				<li class="">
+					<a href="/servers">
+						<!-- <span class="badge bg-primary-500">(icon)</span> -->
+						<span class="flex-auto">Servers</span>
+					</a>
+				</li>
+				<li class="">
+					<a href="/authentication">
+						<!-- <span class="badge bg-primary-500">(icon)</span> -->
+						<span class="flex-auto">Security</span>
+					</a>
+				</li>
+				<li class="">
+					<a href="/paths">
+						<!-- <span class="badge bg-primary-500">(icon)</span> -->
+						<span class="flex-auto">Paths</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+		<div class="mx-8 my-4 grow">
+			<slot />
+		</div>
 	</div>
 </div>

@@ -5,8 +5,8 @@
 
 	const modalStore = getModalStore();
 
-    export let justify: string = 'justify-end';
-    export let sort: boolean = true;
+	export let justify: string = 'justify-end';
+	export let sort: boolean = true;
 </script>
 
 <div class={`flex flex-row ${justify}`}>
@@ -14,7 +14,7 @@
 		<span class="w-full flex justify-center">
 			<button
 				type="button"
-				class="btn btn-sm variant-filled-primary"
+				class="btn text-sm variant-filled-primary"
 				on:click={() => {
 					addPath(modalStore);
 				}}
@@ -22,16 +22,16 @@
 				Add Path
 			</button>
 		</span>
-        {#if sort}
-		<span class="w-full flex justify-center">
-			<button
-				type="button"
-				class="btn btn-sm variant-filled-secondary"
-				on:click={sortPathsAlphabetically}
-			>
-				Sort
-			</button>
-		</span>
-        {/if}
+		{#if sort}
+			<span class="w-full flex justify-center">
+				<button
+					type="button"
+					class="btn text-sm variant-filled-secondary"
+					on:click={sortPathsAlphabetically}
+				>
+					Sort
+				</button>
+			</span>
+		{/if}
 	</div>
 </div>
