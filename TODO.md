@@ -1,5 +1,7 @@
 # TODO
 
+## Functionality
+
 - [x] Add path renaming
 - [x] Add path sub-page for editing a specific route
 - [x] Check that a path variable can only be included once
@@ -66,3 +68,10 @@
 ---
 
 - [ ] Add integration test(s) to check functionality
+
+## UI/UX
+
+- [x] Lightswitch
+- [ ] Theme switcher
+- [ ] Breadcrumbs
+- [ ] Document import/export
