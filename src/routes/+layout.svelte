@@ -45,7 +45,7 @@
 					}
 				}}
 			>
-				X
+				Clear
 			</button>
 		</svelte:fragment>
 	</AppBar>
