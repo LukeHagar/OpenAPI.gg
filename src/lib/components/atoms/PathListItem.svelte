@@ -20,7 +20,7 @@
 <div class="flex justify-between">
 	<h3 class="">{pathName}</h3>
 	<div class="flex gap-2">
-		<a href="/path-{id}" class="btn btn-sm variant-filled-primary">Edit</a>
+		<a href="/paths/{id}" class="btn btn-sm variant-filled-primary">Edit</a>
 		<button
 			type="button"
 			class="btn btn-sm variant-filled-warning"
@@ -28,7 +28,7 @@
 				renamePath(modalStore, pathName);
 			}}
 		>
-			Rename
+			Change path
 		</button>
 		<button
 			type="button"
