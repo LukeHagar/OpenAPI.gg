@@ -3,6 +3,7 @@
 	import { openApiStore, pathRegex, sortPathsAlphabetically } from '$lib';
 	import { pathTemplate } from '$lib/pathTemplate';
 	import PathListItem from '../atoms/PathListItem.svelte';
+	import AddPathButtons from '../atoms/AddPathButtons.svelte';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 
 	const modalStore = getModalStore();
@@ -42,27 +43,17 @@
 </script>
 
 <div
-	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 space-y-4"
+	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 space-y-3"
 >
-	{#each Object.keys($openApiStore.paths) as pathName, index}
-		<PathListItem {pathName} id={index} />
-	{/each}
-	<span class="w-full flex justify-center">
-		<button
-			type="button"
-			class="btn variant-filled-primary"
-			on:click={() => {
-				addPath(modalStore);
-			}}>Add Path</button
-		>
-	</span>
-	<span class="w-full flex justify-center">
-		<button
-			type="button"
-			class="btn btn-sm variant-filled-secondary"
-			on:click={sortPathsAlphabetically}
-		>
-			Sort paths
-		</button>
-	</span>
+	{#if Object.keys($openApiStore.paths).length > 0}
+		<AddPathButtons />
+		<hr />
+		{#each Object.keys($openApiStore.paths) as pathName, index}
+			<PathListItem {pathName} id={index} />
+		{/each}
+		
+		<AddPathButtons />
+		{:else}
+		<AddPathButtons justify="justify-center" sort={false} />
+	{/if}
 </div>

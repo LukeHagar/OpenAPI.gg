@@ -9,7 +9,7 @@
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 	// Modal
-	import { initializeStores, Modal } from '@skeletonlabs/skeleton';
+	import { initializeStores, Modal, LightSwitch } from '@skeletonlabs/skeleton';
 	initializeStores();
 </script>
 
@@ -24,6 +24,7 @@
 			</h1>
 		</svelte:fragment>
 		<svelte:fragment slot="trail">
+			<LightSwitch />
 			<a
 				href="https://www.speakeasyapi.dev/openapi"
 				target="_blank"
@@ -42,7 +43,7 @@
 					}
 				}}
 			>
-				Reset Inputs
+				X
 			</button>
 		</svelte:fragment>
 	</AppBar>

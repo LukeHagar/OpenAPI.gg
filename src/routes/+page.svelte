@@ -10,7 +10,7 @@
 	const tabSet = persisted<number>('tabSet', 0);
 </script>
 
-<TabGroup>
+<TabGroup justify="justify-center">
 	<Tab bind:group={$tabSet} name="info" value={0}>
 		<h4 class="h4">Info</h4>
 	</Tab>

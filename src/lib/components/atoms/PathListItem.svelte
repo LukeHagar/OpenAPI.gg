@@ -18,8 +18,8 @@
 </script>
 
 <div class="flex justify-between">
-	<h3 class="h3">{pathName}</h3>
-	<div class="flex gap-4">
+	<h3 class="">{pathName}</h3>
+	<div class="flex gap-2">
 		<a href="/path-{id}" class="btn btn-sm variant-filled-primary">Edit</a>
 		<button
 			type="button"
