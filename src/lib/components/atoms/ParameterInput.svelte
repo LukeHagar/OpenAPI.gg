@@ -26,7 +26,7 @@
 	};
 </script>
 
-<div class="card py-6 px-4 flex flex-col gap-4">
+<div class="card py-6 px-4 flex flex-col gap-4 text-sm">
 	<h4 class="h4">&lbrace;{variableName}&rbrace;</h4>
 
 	<span class="flex items-center gap-2">
@@ -52,15 +52,21 @@
 			placeholder="Description of the parameter. Supports markdown."
 		/>
 	</label>
-	<SlideToggle name="required" disabled={location === 'path'} bind:checked={value.required}>
-		required
-	</SlideToggle>
-	<SlideToggle name="deprecated" bind:checked={value.deprecated} disabled={location === 'path'}>
-		deprecated
-	</SlideToggle>
-	<SlideToggle name="allowEmptyValue" bind:value={value.allowEmptyValue}>
-		Allow Empty Value
-	</SlideToggle>
+	<div class="flex flex-row gap-16">
+		<SlideToggle name="required" disabled={location === 'path'} bind:checked={value.required}>
+			Required
+		</SlideToggle>
+		<SlideToggle name="deprecated" bind:checked={value.deprecated} disabled={location === 'path'}>
+			Deprecated
+		</SlideToggle>
+		<SlideToggle
+			name="allowEmptyValue"
+			bind:value={value.allowEmptyValue}
+			disabled={location === 'path'}
+		>
+			Allow Empty Value
+		</SlideToggle>
+	</div>
 	<label class="space-y-2">
 		<p>Style</p>
 		<select name="style" class="select" bind:value={value.style}>
@@ -74,8 +80,11 @@
 			<option value="deepObject">Deep Object</option>
 		</select>
 	</label>
-	<SlideToggle name="explode" bind:checked={value.explode}>Explode</SlideToggle>
-	<SlideToggle name="allowReserved" bind:checked={value.allowReserved}>Allow Reserved</SlideToggle>
+	<div class="flex flex-row gap-16">
+		<SlideToggle name="explode" bind:checked={value.explode}>Explode</SlideToggle>
+		<SlideToggle name="allowReserved" bind:checked={value.allowReserved}>Allow Reserved</SlideToggle
+		>
+	</div>
 	<label class="space-y-2">
 		<p>Schema</p>
 		<!-- Subject to change -->

@@ -47,7 +47,7 @@
 </script>
 
 <form
-	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 min-h-20 space-y-4"
+	class="border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 min-h-20 space-y-4"
 >
 	{#each $openApiStore.security as schema, index}
 		<div class="card w-full p-4">

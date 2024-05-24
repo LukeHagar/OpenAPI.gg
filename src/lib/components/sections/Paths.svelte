@@ -12,30 +12,34 @@
 	const modalStore = getModalStore();
 </script>
 
+<div class="w-full flex flex-row justify-center">
+	<div class="fixed flex flex-row gap-2 justify-center bg-surface-50-900-token rounded-full p-4">
+		<span class="flex justify-center">
+			<button
+				type="button"
+				class="btn variant-filled-primary"
+				on:click={() => {
+					addPath(modalStore);
+				}}
+			>
+				Add Path
+			</button>
+		</span>
+		<span class="flex justify-center">
+			<button
+				type="button"
+				class="btn btn-sm variant-filled-secondary"
+				on:click={sortPathsAlphabetically}
+			>
+				Sort paths
+			</button>
+		</span>
+	</div>
+</div>
 <div
-	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 space-y-4"
+	class="mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 space-y-4"
 >
 	{#each Object.keys(paths) as pathName, index}
 		<PathListItem {pathName} id={index} />
 	{/each}
-	<span class="w-full flex justify-center">
-		<button
-			type="button"
-			class="btn variant-filled-primary"
-			on:click={() => {
-				addPath(modalStore);
-			}}
-		>
-			Add Path
-		</button>
-	</span>
-	<span class="w-full flex justify-center">
-		<button
-			type="button"
-			class="btn btn-sm variant-filled-secondary"
-			on:click={sortPathsAlphabetically}
-		>
-			Sort paths
-		</button>
-	</span>
 </div>
