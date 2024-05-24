@@ -74,17 +74,20 @@
 			</svelte:fragment>
 			<svelte:fragment slot="content">
 				<p>Here you can add custom servers for this specific call.</p>
-				{#each tempPath.servers as server, index}
-					<label class="space-y-2">
-						<p>Server {index + 1}</p>
-						<input
-							type="text"
-							class="input"
-							bind:value={server.url}
-							placeholder="URL of the server"
-						/>
-					</label>
-				{/each}
+				{#if tempPath.servers && tempPath.servers.length > 0}
+					{#each tempPath.servers as server, index}
+						<label class="space-y-2">
+							<p>Server {index + 1}</p>
+							<input
+								type="text"
+								class="input"
+								bind:value={server.url}
+								placeholder="URL of the server"
+							/>
+						</label>
+					{/each}
+				{/if}
+
 				<button type="button" class="btn variant-filled-primary"> Add Server </button>
 			</svelte:fragment>
 		</AccordionItem>

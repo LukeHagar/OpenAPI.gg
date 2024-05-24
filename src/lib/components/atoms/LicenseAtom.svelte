@@ -5,10 +5,10 @@
 	const popularLicenses = ['MIT', 'Apache-2.0', 'GPL-3.0', 'Unlicense'];
 </script>
 
-<div class="border-token rounded-container-token space-y-4 p-4">
+<div class="border-token rounded-container-token space-y-1 p-4">
 	<div class="flex flex-row justify-between">
 		<h4 class="h4">License</h4>
-		<label class="text-sm flex flex-col space-y-2">
+		<label class="text-sm space-x-2">
 			<span>Pick a license</span>
 			<select
 				class="select w-56 text-sm"
@@ -32,30 +32,30 @@
 		</label>
 	</div>
 
-	<label class="text-xl space-y-2">
+	<label class="text-sm space-y-1">
 		<span>Name (required)</span>
 		<input
-			class="input"
+			class="input text-sm"
 			name="licenseName"
 			placeholder="Apache 2.0"
 			type="text"
 			bind:value={$openApiStore.info.license.name}
 		/>
 	</label>
-	<label class="text-xl space-y-2">
+	<label class="text-sm space-y-1">
 		<span>Identifer (optional)</span>
 		<input
-			class="input"
+			class="input text-sm"
 			name="licenseIdentifier"
 			placeholder="Apache-2.0"
 			type="text"
 			bind:value={$openApiStore.info.license.identifier}
 		/>
 	</label>
-	<label class="text-xl space-y-2">
+	<label class="text-sm space-y-1">
 		<span>URL (optional)</span>
 		<input
-			class="input"
+			class="input text-sm"
 			name="licenseUrl"
 			placeholder="https://www.apache.org/licenses/LICENSE-2.0.html"
 			type="url"

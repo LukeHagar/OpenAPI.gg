@@ -1,8 +1,45 @@
 <script lang="ts">
-	import { AppRail, AppRailAnchor, AppRailTile, LightSwitch } from '@skeletonlabs/skeleton';
+	import {
+		AppRail,
+		AppRailAnchor,
+		AppRailTile,
+		FileDropzone,
+		LightSwitch
+	} from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 	import { localStoragePrefix } from '$lib';
 	import { goto } from '$app/navigation';
+	import { parse, stringify } from 'yaml';
+	import { openApiStore } from '$lib';
+	import filenamify from 'filenamify';
+
+	let files: FileList | undefined;
+
+	$: fileName = filenamify($openApiStore.info.title) || 'openapi';
+
+	function onFileUpload(e: Event): void {
+		console.log('onFileUpload', e);
+		console.log('files', files);
+		if (!files) return;
+		console.log('files[0]', files[0]);
+		const file = files[0];
+		const reader = new FileReader();
+		reader.onload = () => {
+			const result = reader.result as string;
+			const isJson = file.name.endsWith('.json');
+			console.log('isJson', isJson);
+			try {
+				if (isJson) {
+					openApiStore.set(JSON.parse(result));
+				} else {
+					openApiStore.set(parse(result));
+				}
+			} catch (error) {
+				console.error(`Error parsing ${isJson ? 'json' : 'yaml'} file`, error);
+			}
+		};
+		reader.readAsText(file);
+	}
 </script>
 
 <AppRail width="w-28" aspectRatio="aspect-[3/2]" background="variant-ghost-surface" border="ring-0">
@@ -87,9 +124,29 @@
 		Paths
 	</AppRailAnchor>
 	<svelte:fragment slot="trail">
+		<FileDropzone
+			bind:files
+			accept=".yml,.yaml,.json"
+			on:change={onFileUpload}
+			type="file"
+			name="openapispec"
+		/>
 		<button
 			type="button"
 			class="btn text-sm rounded-none text-wrap variant-soft-primary flex flex-col justify-center items-center h-20 w-full"
+			on:click={() => {
+				const openApiStorage = localStorage.getItem(`${localStoragePrefix}openApi`);
+				if (!openApiStorage) return;
+				const openApi = JSON.parse(openApiStorage);
+				const blob = new Blob([JSON.stringify(openApi, null, 2)], { type: 'application/json' });
+				const url = URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = `${fileName}.json`;
+				document.body.appendChild(a);
+				a.click();
+				window.URL.revokeObjectURL(url);
+			}}
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -106,6 +163,42 @@
 				/>
 			</svg>
 			Download JSON
+		</button>
+		<button
+			type="button"
+			class="btn text-sm rounded-none text-wrap variant-soft-primary flex flex-col justify-center items-center h-20 w-full"
+			on:click={() => {
+				const openApiStorage = localStorage.getItem(`${localStoragePrefix}openApi`);
+				if (!openApiStorage) return;
+				const openApi = JSON.parse(openApiStorage);
+				const blob = new Blob(
+					[stringify(openApi, null, { indent: 2, aliasDuplicateObjects: false })],
+					{ type: 'application/yaml' }
+				);
+				const url = URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = `${fileName}.yaml`;
+				document.body.appendChild(a);
+				a.click();
+				window.URL.revokeObjectURL(url);
+			}}
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke-width="1.5"
+				stroke="currentColor"
+				class="size-6"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+				/>
+			</svg>
+			Download YAML
 		</button>
 		<button
 			type="button"
