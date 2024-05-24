@@ -2,6 +2,9 @@ import { get } from 'svelte/store';
 import type { ModalSettings, ModalStore } from '@skeletonlabs/skeleton';
 import { pathTemplate } from './pathTemplate';
 import { openApiStore } from '$lib';
+import type { OpenAPIV3 } from './openAPITypes';
+
+export const pathVariables = /\{([^}]+)\}/gm;
 
 export const pathRegex = /\/([/]*[{]?[a-zA-Z]+[}]?)*/gm;
 
@@ -39,8 +42,6 @@ export const addPath = (modalStore: ModalStore, startingPoint: string = '/') => 
 			const store = get(openApiStore);
 			if (!store.paths) store.paths = {};
 			store.paths[userPath] = pathTemplate;
-			// add path to store
-			openApiStore.set(store);
 
 			// sort paths alphabetically
 			sortPathsAlphabetically();
@@ -136,11 +137,12 @@ export const isValidPath = (path: string) => {
 	}
 
 	// check if path is a valid path
-	const pathWithoutVariables = path.replace('{', '').replace('}', '');
+	const pathWithoutVariables = path.replaceAll('{', '').replaceAll('}', '');
+	console.log(pathWithoutVariables);
 	const pathRegex = /(\/[a-zA-Z-]+)+|\//gm;
 	const pathParts = pathWithoutVariables.match(pathRegex);
 	// the fallback is to return false if the pathParts array is null
-	return pathParts?.length === 1 ? true : false;
+	return pathParts?.length === 1;
 };
 
 /// sorts the paths in the OpenAPI document alphabetically
@@ -160,4 +162,21 @@ export const sortPathsAlphabetically = () => {
 		data.paths = tempPathObject;
 		return data;
 	});
+};
+
+export const getPathVariables = (path: string) => {
+	const variables = path.match(pathVariables);
+	if (!variables) return [];
+
+	return variables.map((variable) => variable.replace('{', '').replace('}', ''));
+};
+
+export const sortPathParameters = (parameters: OpenAPIV3.ParameterObject[]) => {
+	const tempParameters = parameters;
+	tempParameters.sort((a, b) => {
+		if (a.in < b.in) return -1;
+		if (a.in > b.in) return 1;
+		return 0;
+	});
+	return tempParameters;
 };
