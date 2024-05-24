@@ -2,15 +2,15 @@
 	import { InputChip } from '@skeletonlabs/skeleton';
 	import Info from '../icons/Info.svelte';
 	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
+	import { pathVariables } from '$lib';
 
 	export let id: number;
 	export let server: OpenAPIV3_1.ServerObject;
 
-	const variableRegex = /\{([^}]+)\}/gm;
 	const addVariables = () => {
 		if (!server.url) return;
 
-		const matches = server.url.match(variableRegex);
+		const matches = server.url.match(pathVariables);
 
 		if (!matches) {
 			server.variables = undefined;
@@ -73,9 +73,9 @@
 		<div>
 			<h4 class="h4">Variables</h4>
 			<p class="text-sm">
-				Define variables by adding them to the server URL using curly-braces like so: <code
-					>&lbrace;id&rbrace;</code
-				>.
+				Define variables by adding them to the server URL using curly-braces like so: <code>
+					&lbrace;id&rbrace;
+				</code>.
 			</p>
 		</div>
 		{#if server.variables}

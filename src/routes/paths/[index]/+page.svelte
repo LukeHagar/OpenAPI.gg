@@ -1,108 +1,160 @@
 <script lang="ts">
-	import ServerInput from '$lib/components/atoms/ServerInput.svelte';
-	import { openApiStore } from '$lib';
-	import { SlideToggle } from '@skeletonlabs/skeleton';
-	import { pathTemplate } from '$lib/pathTemplate';
+	import { HttpMethods, openApiStore } from '$lib';
+	import ParameterInput from '$lib/components/atoms/ParameterInput.svelte';
+	import { getPathVariables } from '$lib/pathHandling';
+	import type { OpenAPIV3 } from '$lib/openAPITypes';
 	import type { PageData } from './$types';
+	import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 
-	// create local path object to work with
-	const localPathObject = (() => {
-		// @ts-expect-error - damn those stolen types for their inaccuracy
-		return $openApiStore.paths[data.pathName] ?? pathTemplate;
-	})();
-
-	let customServersEnabled: boolean = false;
-
-	if (localPathObject.servers?.length > 0) {
-		customServersEnabled = true;
-	}
-
-	const addCustomServer = () => {
-		if (!Array.isArray(localPathObject.servers)) {
-			localPathObject.servers = [];
-		}
-		localPathObject.servers.push({ url: '', description: '' });
-		// yay svelte reactivity
-		localPathObject.servers = localPathObject.servers;
+	let newParam: 'query' | 'header' | 'cookie' = 'query';
+	let tempPath: OpenAPIV3.PathItemObject = {
+		parameters: []
 	};
+	openApiStore.subscribe((store) => {
+		if (!data.pathName) return;
+		if (store.paths == undefined) tempPath = {};
+		if (!store.paths!.hasOwnProperty(data.pathName)) tempPath = {};
+		// @ts-expect-error - working with a known not empty object
+		tempPath = store.paths[data.pathName] ?? {};
 
-	const removeCustomServer = (index: number) => {
-		if (!Array.isArray(localPathObject.servers)) {
-			return;
-		}
-		localPathObject.servers.splice(index, 1);
-		// yay svelte reactivity
-		localPathObject.servers = localPathObject.servers;
-	};
+		if (!tempPath.hasOwnProperty('parameters')) tempPath.parameters = [];
+	});
+
+	const pathVariables = getPathVariables(data.pathName ?? '');
+
+	pathVariables.forEach((variable) => {
+		// push path variables to the parameters array
+		// @ts-expect-error - working with a array thats loosely defined
+		tempPath.parameters.push({
+			name: variable,
+			in: 'path',
+			required: true
+		});
+	});
 </script>
 
-<div class="card p-4 space-y-4">
-	<a href="/paths"> {`<-`} Back </a>
-	<h1>{data.pathName}</h1>
-	<label class="space-y-1">
-		<h5 class="h5">Summary</h5>
-		<p class="text-sm">A short summary of what the path item represents.</p>
-		<input type="text" class="input" placeholder="Summary" bind:value={localPathObject.summary} />
-	</label>
-	<label class="space-y-1">
-		<h5 class="h5">Description</h5>
-		<p class="text-sm">A description of the path item. Supports Markdown.</p>
-		<textarea class="textarea" placeholder="Description" bind:value={localPathObject.description} />
-	</label>
-	<div>
-		<span class="flex flex-col gap-4">
-			<h5 class="h5">Servers</h5>
-			<SlideToggle name="slide" size="sm" bind:checked={customServersEnabled} />
-			{#if customServersEnabled && Array.isArray(localPathObject.servers)}
-				<ul class="list space-y-6">
-					{#each localPathObject.servers as server, index}
-						<li class="!block">
-							<span class="flex w-full justify-end">
-								<button
-									type="button"
-									class="btn btn-sm variant-ringed-error hover:variant-filled-error"
-									on:click={() => removeCustomServer(index)}
-								>
-									Remove Server
-								</button>
-							</span>
-							<ServerInput id={1} bind:server />
-						</li>
-						{#if index < localPathObject.servers.length - 1}
-							<hr />
-						{/if}
-					{/each}
-				</ul>
-			{/if}
-			{#if customServersEnabled}
-				<span class="flex w-full justify-center">
-					<button type="button" class="btn variant-filled-primary" on:click={addCustomServer}>
-						Add Server
+<div
+	class="border-token border-surface-500 space-y-4 px-6 py-4 rounded-container-token variant-glass-surface"
+>
+	<h3 class="h3">
+		{data.pathName}
+	</h3>
+	<hr />
+
+	<Accordion>
+		<AccordionItem>
+			<svelte:fragment slot="summary">
+				<h4 class="h4">General</h4>
+			</svelte:fragment>
+			<svelte:fragment slot="content">
+				<label class="space-y-2">
+					<p>Summary</p>
+					<input
+						type="text"
+						class="input"
+						bind:value={tempPath.summary}
+						placeholder="Summary of the path"
+					/>
+				</label>
+				<label class="space-y-2">
+					<p>Description</p>
+					<textarea
+						class="textarea"
+						bind:value={tempPath.description}
+						placeholder="Description of the path. Supports markdown."
+					/>
+				</label>
+			</svelte:fragment>
+		</AccordionItem>
+		<AccordionItem>
+			<svelte:fragment slot="summary">
+				<h4 class="h4">Custom Servers</h4>
+			</svelte:fragment>
+			<svelte:fragment slot="content">
+				<p>Here you can add custom servers for this specific call.</p>
+				{#each tempPath.servers as server, index}
+					<label class="space-y-2">
+						<p>Server {index + 1}</p>
+						<input
+							type="text"
+							class="input"
+							bind:value={server.url}
+							placeholder="URL of the server"
+						/>
+					</label>
+				{/each}
+				<button type="button" class="btn variant-filled-primary"> Add Server </button>
+			</svelte:fragment>
+		</AccordionItem>
+		<AccordionItem>
+			<svelte:fragment slot="summary">
+				<h4 class="h4">Parameters</h4>
+			</svelte:fragment>
+			<svelte:fragment slot="content">
+				{#each tempPath.parameters as param}
+					<ParameterInput variableName={param.name} bind:value={param} location="path" />
+				{/each}
+
+				<span class="flex items-center gap-2">
+					<select name="newParameter" bind:value={newParam} class="select w-min">
+						<option value="query">Query</option>
+						<option value="header">Header</option>
+						<option value="cookie">Cookie</option>
+					</select>
+					<button type="button" class="btn variant-filled-primary">
+						Add {newParam} Parameter
 					</button>
 				</span>
-			{/if}
-		</span>
-	</div>
-	<div>
-		<h5 class="h5">Parameters</h5>
-		<div class="ml-2">
-			<div>
-				<h6 class="h6">Path Parameters</h6>
-			</div>
-			<div>
-				<h6 class="h6">Query Parameters</h6>
-			</div>
-			<div>
-				<h6 class="h6">Header Parameters</h6>
-			</div>
-			<div>
-				<h6 class="h6">Cookie Parameters</h6>
-			</div>
-		</div>
-	</div>
-	<div>
-		<h5 class="h5">Operations</h5>
-	</div>
+			</svelte:fragment>
+		</AccordionItem>
+		<AccordionItem>
+			<svelte:fragment slot="summary">
+				<h4 class="h4">Operations</h4>
+			</svelte:fragment>
+			<svelte:fragment slot="content">
+				<p>
+					Here you can add operations for this path. Select only the operations you want to support
+				</p>
+
+				<div class="flex gap-4">
+					{#each Object.values(HttpMethods) as method}
+						<label class="flex items-center gap-2">
+							<input
+								type="checkbox"
+								class="checkbox"
+								on:input={(event) => {
+									if (event.target.checked) {
+										tempPath[method] = {
+											tags: [],
+											summary: '',
+											description: '',
+											externalDocs: {
+												description: '',
+												url: ''
+											},
+											operationId: '',
+											parameters: [],
+											requestBody: {
+												content: {},
+												description: '',
+												required: false
+											},
+											responses: {},
+											callbacks: {},
+											deprecated: false,
+											security: [],
+											servers: []
+										};
+									}
+								}}
+							/>
+							{method.toUpperCase()}
+						</label>
+					{/each}
+				</div>
+			</svelte:fragment>
+		</AccordionItem>
+	</Accordion>
 </div>
