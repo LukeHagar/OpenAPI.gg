@@ -24,14 +24,15 @@
 </script>
 
 <form
-	class="container mx-auto border-token rounded-container-token bg-surface-backdrop-token px-6 py-4 min-h-20 space-y-6"
+	class=" mx-auto border-token rounded-container-token bg-surface-backdrop-token p-4 min-h-20 space-y-6"
 >
 	<!-- If openApiStore.servers isnt an array show add button -->
 	{#if Array.isArray($openApiStore.servers)}
-		<ul class="list space-y-6">
+		<ul class="space-y-6">
 			{#each $openApiStore.servers as server, index}
 				<li class="!block">
-					<span class="flex w-full justify-end">
+					<span class="flex w-full justify-between">
+						<span>Server {index + 1} </span>
 						<button
 							type="button"
 							class="btn btn-sm variant-ringed-error hover:variant-filled-error"
