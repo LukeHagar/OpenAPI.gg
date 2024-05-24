@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { InputChip } from '@skeletonlabs/skeleton';
+	import { Accordion, AccordionItem, InputChip } from '@skeletonlabs/skeleton';
 	import Info from '../icons/Info.svelte';
 	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
 	import { pathVariables } from '$lib';
@@ -56,67 +56,84 @@
 	</label>
 
 	<label class="space-y-2">
-		<span>
+		<span class="flex flex-row gap-2">
 			Description
-			<button type="button">
+			<div class="my-auto">
 				<Info />
-			</button>
+			</div>
 		</span>
 		<textarea
-			class="textarea"
+			class="textarea text-sm"
 			name="description {id}"
 			placeholder="Optional multiline or single-line description. Supports Markdown."
 			bind:value={server.description}
 		/>
 	</label>
 	<div class="border-token rounded-container-token space-y-4 p-4">
-		<div>
-			<h4 class="h4">Variables</h4>
-			<p class="text-sm">
-				Define variables by adding them to the server URL using curly-braces like so: <code>
-					&lbrace;id&rbrace;
-				</code>.
-			</p>
-		</div>
 		{#if server.variables}
-			<table class="table">
-				<tbody>
-					{#each Object.keys(server.variables) as variable, index}
-						<tr>
-							<td class="text-center">
-								<div class="flex justify-center items-center">
-									<p class="text-lg">{variable}</p>
-								</div>
-							</td>
-							<td>
-								<input
-									class="input"
-									placeholder="default"
-									type="text"
-									bind:value={server.variables[variable].default}
-								/>
-							</td>
-							<td>
-								<input
-									class="input"
-									placeholder="description"
-									type="text"
-									bind:value={server.variables[variable].description}
-								/>
-							</td>
-							<td class="!w-1/3">
-								<div>
-									<InputChip
-										bind:value={server.variables[variable].enum}
-										name="enum"
-										placeholder="enum (optional) - press enter to add more items"
-									/>
-								</div>
-							</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
+			<Accordion>
+				<AccordionItem>
+					<svelte:fragment slot="summary">
+						<div>
+							<h4 class="h4">Variables</h4>
+							<p class="text-sm">
+								Define variables by adding them to the server URL using curly-braces like so: <code>
+									&lbrace;id&rbrace;
+								</code>.
+							</p>
+						</div>
+					</svelte:fragment>
+					<svelte:fragment slot="content">
+						<table class="table">
+							<tbody>
+								{#each Object.keys(server.variables) as variable, index}
+									<tr>
+										<td class="text-center">
+											<div class="flex justify-center items-center">
+												<p class="text-lg">{variable}</p>
+											</div>
+										</td>
+										<td>
+											<label>
+												<span>Default</span>
+												<input
+													class="input"
+													placeholder="default"
+													type="text"
+													bind:value={server.variables[variable].default}
+												/>
+											</label>
+										</td>
+										<td>
+											<label>
+												<span>Description</span>
+												<textarea
+													class="textarea"
+													placeholder="description"
+													bind:value={server.variables[variable].description}
+												/>
+											</label>
+										</td>
+										<td class="!w-1/3">
+											<div>
+												<label for="Enum">
+													<span>Enum</span>
+													<InputChip
+														label="Enum"
+														bind:value={server.variables[variable].enum}
+														name="enum"
+														placeholder="enum (optional) - press enter to add more items"
+													/>
+												</label>
+											</div>
+										</td>
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+					</svelte:fragment>
+				</AccordionItem>
+			</Accordion>
 		{/if}
 	</div>
 </div>
