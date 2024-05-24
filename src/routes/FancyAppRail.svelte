@@ -3,6 +3,7 @@
 		AppRail,
 		AppRailAnchor,
 		AppRailTile,
+		FileButton,
 		FileDropzone,
 		LightSwitch
 	} from '@skeletonlabs/skeleton';
@@ -124,13 +125,16 @@
 		Paths
 	</AppRailAnchor>
 	<svelte:fragment slot="trail">
-		<FileDropzone
+		<FileButton
 			bind:files
 			accept=".yml,.yaml,.json"
+			button="btn text-sm rounded-none text-wrap variant-soft-primary flex flex-col justify-center items-center h-20 w-full"
 			on:change={onFileUpload}
 			type="file"
 			name="openapispec"
-		/>
+		>
+			Upload</FileButton
+		>
 		<button
 			type="button"
 			class="btn text-sm rounded-none text-wrap variant-soft-primary flex flex-col justify-center items-center h-20 w-full"
@@ -202,7 +206,7 @@
 		</button>
 		<button
 			type="button"
-			class="btn text-sm rounded-none text-wrap variant-ringed-error hover:variant-soft-error flex justify-center items-center h-16 w-full"
+			class="btn text-sm rounded-none text-wrap variant-soft-error hover:variant-soft-error flex justify-center items-center h-16 w-full"
 			on:click={() => {
 				if (confirm('Are you sure you want to reset ALL current inputs?')) {
 					// remove `openApi` from localStorage

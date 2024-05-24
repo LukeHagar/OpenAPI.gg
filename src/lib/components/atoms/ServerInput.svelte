@@ -69,7 +69,7 @@
 			bind:value={server.description}
 		/>
 	</label>
-	<div class="border-token rounded-container-token space-y-4 p-4">
+	<div class="border-token rounded-container-token space-y-4">
 		{#if server.variables}
 			<Accordion>
 				<AccordionItem>
@@ -84,7 +84,7 @@
 						</div>
 					</svelte:fragment>
 					<svelte:fragment slot="content">
-						<table class="table">
+						<table class="table my-2">
 							<tbody>
 								{#each Object.keys(server.variables) as variable, index}
 									<tr>
