@@ -4,7 +4,6 @@
 		AppRailAnchor,
 		AppRailTile,
 		FileButton,
-		FileDropzone,
 		LightSwitch
 	} from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
@@ -19,16 +18,13 @@
 	$: fileName = filenamify($openApiStore.info.title) || 'openapi';
 
 	function onFileUpload(e: Event): void {
-		console.log('onFileUpload', e);
-		console.log('files', files);
 		if (!files) return;
-		console.log('files[0]', files[0]);
+
 		const file = files[0];
 		const reader = new FileReader();
 		reader.onload = () => {
 			const result = reader.result as string;
 			const isJson = file.name.endsWith('.json');
-			console.log('isJson', isJson);
 			try {
 				if (isJson) {
 					openApiStore.set(JSON.parse(result));
@@ -45,13 +41,17 @@
 
 <AppRail width="w-28" aspectRatio="aspect-[3/2]" background="variant-ghost-surface" border="ring-0">
 	<svelte:fragment slot="lead">
-		<div class="my-4">
+		<div>
 			<AppRailAnchor href="/">
-				<p class="font-bold mb-1">OpenAPI</p>
-				<p class=" mb-2">Generator</p>
-				<code class="text-xs ml-2 variant-filled-success p-1 px-2 rounded-container-token">
-					3.1.0
-				</code>
+				<div class="flex flex-col gap-2 py-4">
+					<p class="font-bold">OpenAPI</p>
+					<p>Generator</p>
+					<code
+						class="mx-auto w-min text-xs variant-filled-success p-1 px-2 rounded-container-token"
+					>
+						3.1.0
+					</code>
+				</div>
 			</AppRailAnchor>
 		</div>
 		<hr />
