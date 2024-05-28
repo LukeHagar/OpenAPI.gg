@@ -57,6 +57,9 @@ importers:
       autoprefixer:
         specifier: 10.4.19
         version: 10.4.19(postcss@8.4.38)
+      dexie:
+        specifier: ^4.0.7
+        version: 4.0.7
       eslint:
         specifier: ^8.56.0
         version: 8.57.0
@@ -851,6 +854,9 @@ packages:
 
   devalue@5.0.0:
     resolution: {integrity: sha512-gO+/OMXF7488D+u3ue+G7Y4AA3ZmUnB3eHJXmBTgNHvr4ZNzl36A0ZtG+XCRNYCkYx/bFmw4qtkoFLa+wSrwAA==}
+
+  dexie@4.0.7:
+    resolution: {integrity: sha512-M+Lo6rk4pekIfrc2T0o2tvVJwL6EAAM/B78DNfb8aaxFVoI1f8/rz5KTxuAnApkwqTSuxx7T5t0RKH7qprapGg==}
 
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
@@ -2438,6 +2444,8 @@ snapshots:
   detect-libc@2.0.3: {}
 
   devalue@5.0.0: {}
+
+  dexie@4.0.7: {}
 
   didyoumean@1.2.2: {}
 

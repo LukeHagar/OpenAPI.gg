@@ -16,11 +16,13 @@ export const operationCount = (openApiDoc: OpenAPIV3_1.Document) => {
 
 export const pathCount = (openApiDoc: OpenAPIV3_1.Document) => {
 	let count = 0;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	for (const path in openApiDoc.paths) {
 		count++;
 	}
 	return count;
 }
+
 
 export const openApiStore = persisted<OpenAPIV3_1.Document>(`${localStoragePrefix}openApi`, {
 	openapi: '3.1.0', // OpenAPI version

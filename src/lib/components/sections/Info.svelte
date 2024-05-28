@@ -50,36 +50,53 @@
 	</div>
 	<div class="border-token rounded-container-token bg-surface-backdrop-token space-y-1 p-4">
 		<h4 class="h4">Contact Information</h4>
-		<label class="space-y-1">
-			<span class="text-sm">Name (optional)</span>
-			<input
-				class="input text-sm"
-				name="contactName"
-				placeholder="John Doe"
-				type="text"
-				bind:value={$openApiStore.info.contact.name}
-			/>
-		</label>
-		<label class="space-y-1">
-			<span class="text-sm">Email (optional)</span>
-			<input
-				class="input text-sm"
-				name="contactEmail"
-				placeholder="email@example.com"
-				type="email"
-				bind:value={$openApiStore.info.contact.email}
-			/>
-		</label>
-		<label class="space-y-1">
-			<span class="text-sm">URL (optional)</span>
-			<input
-				class="input text-sm"
-				name="contactUrl"
-				placeholder="https://example.com"
-				type="url"
-				bind:value={$openApiStore.info.contact.url}
-			/>
-		</label>
+		{#if $openApiStore.info.contact}
+			<label class="space-y-1">
+				<span class="text-sm">Name (optional)</span>
+				<input
+					class="input text-sm"
+					name="contactName"
+					placeholder="John Doe"
+					type="text"
+					bind:value={$openApiStore.info.contact.name}
+				/>
+			</label>
+			<label class="space-y-1">
+				<span class="text-sm">Email (optional)</span>
+				<input
+					class="input text-sm"
+					name="contactEmail"
+					placeholder="email@example.com"
+					type="email"
+					bind:value={$openApiStore.info.contact.email}
+				/>
+			</label>
+			<label class="space-y-1">
+				<span class="text-sm">URL (optional)</span>
+				<input
+					class="input text-sm"
+					name="contactUrl"
+					placeholder="https://example.com"
+					type="url"
+					bind:value={$openApiStore.info.contact.url}
+				/>
+			</label>
+		{:else}
+			<button
+				type="button"
+				class="btn variant-filled-primary"
+				on:click={() => {
+					$openApiStore.info.contact = {
+						name: '',
+						email: '',
+						url: ''
+					};
+				}}
+			>
+				Add Contact
+			</button>
+		{/if}
 	</div>
+
 	<LicenseAtom />
 </form>
