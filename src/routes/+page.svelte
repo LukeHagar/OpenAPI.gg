@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CreateNewButton from '$lib/components/FileManagement/CreateNewButton.svelte';
 	import DeleteButton from '$lib/components/FileManagement/DeleteButton.svelte';
+	import SaveButton from '$lib/components/FileManagement/SaveButton.svelte';
 	import Upload from '$lib/components/FileManagement/Upload.svelte';
 	import { db, selectedSpec } from '$lib/db';
 	import { liveQuery } from 'dexie';
@@ -10,19 +11,39 @@
 </script>
 
 <div class="grid place-content-center h-full gap-2 px-1">
-	<label class="flex flex-col text-xs">
-		<span>Select an API</span>
-		<select bind:value={$selectedSpec} class="select w-64">
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="text-left">ID</th>
+				<th class="text-left">Name</th>
+				<th class="text-left">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
 			{#if $apiSpecs}
 				{#each $apiSpecs as spec (spec.id)}
-					<option value={spec}>{spec.name}</option>
+					<tr>
+						<td>{spec.id}</td>
+						<td>{spec.name}</td>
+						<td>
+							<DeleteButton {spec} />
+						</td>
+					</tr>
 				{/each}
 			{/if}
-		</select>
-	</label>
+		</tbody>
+	</table>
+	{#if $selectedSpec?.name}
+		<input
+			class="input"
+			bind:value={$selectedSpec.name}
+			type="text"
+			placeholder="Enter the name for the API Spec"
+		/>
+	{/if}
+	<SaveButton />
 	<CreateNewButton />
 	<Upload />
-	<DeleteButton />
 </div>
 <!-- <div class="w-full h-full flex flex-col items-center justify-center grow">
 	<h1 class="h1">
