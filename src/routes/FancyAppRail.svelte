@@ -1,32 +1,13 @@
 <script lang="ts">
-	import {
-		AppRail,
-		AppRailAnchor,
-		AppRailTile,
-		FileButton,
-		LightSwitch
-	} from '@skeletonlabs/skeleton';
+	import { AppRail, AppRailAnchor, LightSwitch } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
-	import { localStoragePrefix } from '$lib';
-	import { goto } from '$app/navigation';
-	import { parse, stringify } from 'yaml';
-	import { openApiStore } from '$lib';
-	import filenamify from 'filenamify';
 	import { liveQuery } from 'dexie';
-	import { db, type APISpec } from '$lib/db';
-	import Upload from '$lib/components/FileManagement/Upload.svelte';
-	import { onMount } from 'svelte';
-	import DownloadButtons from '$lib/components/FileManagement/DownloadButtons.svelte';
+	import { db } from '$lib/db';
 
-	let currentSpec: APISpec | undefined;
-	$: if (currentSpec) {
-		$openApiStore = currentSpec.spec;
-	}
+	import DownloadButtons from '$lib/components/FileManagement/DownloadButtons.svelte';
 
 	let apiSpecs = liveQuery(() => db.apiSpecs.toArray());
 	$: console.log($apiSpecs);
-
-	$: fileName = filenamify($openApiStore.info.title) || 'openapi';
 </script>
 
 <AppRail width="w-28" aspectRatio="aspect-[3/2]" background="variant-ghost-surface" border="ring-0">
