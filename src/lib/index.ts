@@ -1,5 +1,5 @@
-import { persisted } from 'svelte-persisted-store';
 import type { OpenAPIV3_1 } from './openAPITypes';
+import { writable, type Writable } from 'svelte/store';
 
 export const localStoragePrefix = 'openapigen-';
 
@@ -24,7 +24,7 @@ export const pathCount = (openApiDoc: OpenAPIV3_1.Document) => {
 }
 
 
-export const openApiStore = persisted<OpenAPIV3_1.Document>(`${localStoragePrefix}openApi`, {
+export const openApiStore: Writable<OpenAPIV3_1.Document> = writable({
 	openapi: '3.1.0', // OpenAPI version
 	info: {
 		/** Title of the API (required) */
