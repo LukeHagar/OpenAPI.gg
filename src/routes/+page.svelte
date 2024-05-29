@@ -1,7 +1,9 @@
 <script lang="ts">
 	import CreateNewButton from '$lib/components/FileManagement/CreateNewButton.svelte';
 	import DeleteButton from '$lib/components/FileManagement/DeleteButton.svelte';
+	import LoadButton from '$lib/components/FileManagement/LoadButton.svelte';
 	import SaveButton from '$lib/components/FileManagement/SaveButton.svelte';
+	import SaveNewButton from '$lib/components/FileManagement/SaveNewButton.svelte';
 	import Upload from '$lib/components/FileManagement/Upload.svelte';
 	import { db, selectedSpec } from '$lib/db';
 	import { liveQuery } from 'dexie';
@@ -26,6 +28,7 @@
 						<td>{spec.id}</td>
 						<td>{spec.name}</td>
 						<td>
+							<LoadButton {spec} />
 							<DeleteButton {spec} />
 						</td>
 					</tr>
@@ -33,7 +36,7 @@
 			{/if}
 		</tbody>
 	</table>
-	{#if $selectedSpec?.name}
+	{#if $selectedSpec}
 		<input
 			class="input"
 			bind:value={$selectedSpec.name}
@@ -42,6 +45,7 @@
 		/>
 	{/if}
 	<SaveButton />
+	<SaveNewButton />
 	<CreateNewButton />
 	<Upload />
 </div>

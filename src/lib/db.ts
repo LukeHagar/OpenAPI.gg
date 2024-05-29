@@ -5,19 +5,10 @@ import { writable, type Writable } from "svelte/store";
 
 export const selectedSpec: Writable<APISpec | undefined> = writable(undefined)
 
-openApiStore.subscribe((value) => {
-    if (selectedSpec) {
-        selectedSpec.update((v) => {
-            if (v) {
-                return {
-                    ...v,
-                    spec: value
-                }
-            }
-            return v;
-        })
-    }
-});
+export const setSpec = (spec: APISpec) => {
+    selectedSpec.set(spec);
+    openApiStore.set(spec.spec);
+}
 
 export interface APISpec {
     id?: string;

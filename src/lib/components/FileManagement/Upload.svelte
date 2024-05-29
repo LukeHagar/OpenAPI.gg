@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { openApiStore } from '$lib';
-	import { db, selectedSpec } from '$lib/db';
+	import { db, selectedSpec, setSpec } from '$lib/db';
 	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
 	import {
 		FileButton,
@@ -29,11 +29,7 @@
 				} else {
 					content = parse(result);
 				}
-				openApiStore.set(content);
-				selectedSpec.set({
-					name: file.name,
-					spec: content
-				});
+				setSpec({ name: file.name, spec: content });
 			} catch (error) {
 				console.error(`Error parsing ${isJson ? 'json' : 'yaml'} file`, error);
 			}
