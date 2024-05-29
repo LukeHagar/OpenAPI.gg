@@ -1,8 +1,23 @@
+import { openApiStore } from "$lib";
 import type { OpenAPIV3_1 } from "$lib/openAPITypes";
 import Dexie, { type Table } from 'dexie';
-import { persisted } from "svelte-persisted-store";
+import { writable, type Writable } from "svelte/store";
 
-export const selectedSpec = persisted<APISpec | undefined>(`selectedSpec`, undefined)
+export const selectedSpec: Writable<APISpec | undefined> = writable(undefined)
+
+openApiStore.subscribe((value) => {
+    if (selectedSpec) {
+        selectedSpec.update((v) => {
+            if (v) {
+                return {
+                    ...v,
+                    spec: value
+                }
+            }
+            return v;
+        })
+    }
+});
 
 export interface APISpec {
     id?: string;
