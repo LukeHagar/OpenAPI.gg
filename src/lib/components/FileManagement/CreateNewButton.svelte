@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { localStoragePrefix, newSpec } from '$lib';
-	import { setSpec } from '$lib/db';
+	import { newSpec, setSpec } from '$lib/db';
 </script>
 
 <button

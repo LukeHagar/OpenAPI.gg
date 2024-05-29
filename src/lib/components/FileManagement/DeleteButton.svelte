@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { newSpec } from '$lib';
+	import { newSpec } from '$lib/db';
 	import { db, setSpec, type APISpec } from '$lib/db';
 
 	export let spec: APISpec;

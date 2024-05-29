@@ -1,4 +1,3 @@
-import type { APISpec } from './db';
 import type { OpenAPIV3_1 } from './openAPITypes';
 import { writable, type Writable } from 'svelte/store';
 
@@ -38,11 +37,6 @@ export const blankSpec: OpenAPIV3_1.Document = {
 		description: '',
 		url: ''
 	}
-}
-
-export const newSpec: APISpec = {
-	name: 'OpenAPI',
-	spec: blankSpec
 }
 
 export const operationCount = (openApiDoc: OpenAPIV3_1.Document) => {
