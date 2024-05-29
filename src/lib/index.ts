@@ -1,30 +1,10 @@
+import type { APISpec } from './db';
 import type { OpenAPIV3_1 } from './openAPITypes';
 import { writable, type Writable } from 'svelte/store';
 
 export const localStoragePrefix = 'openapigen-';
 
-export const operationCount = (openApiDoc: OpenAPIV3_1.Document) => {
-	let count = 0;
-	for (const path in openApiDoc.paths) {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		for (const method in openApiDoc.paths[path]) {
-			count++;
-		}
-	}
-	return count;
-}
-
-export const pathCount = (openApiDoc: OpenAPIV3_1.Document) => {
-	let count = 0;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	for (const path in openApiDoc.paths) {
-		count++;
-	}
-	return count;
-}
-
-
-export const openApiStore: Writable<OpenAPIV3_1.Document> = writable({
+export const blankSpec: OpenAPIV3_1.Document = {
 	openapi: '3.1.0', // OpenAPI version
 	info: {
 		/** Title of the API (required) */
@@ -58,7 +38,35 @@ export const openApiStore: Writable<OpenAPIV3_1.Document> = writable({
 		description: '',
 		url: ''
 	}
-});
+}
+
+export const newSpec: APISpec = {
+	name: 'OpenAPI',
+	spec: blankSpec
+}
+
+export const operationCount = (openApiDoc: OpenAPIV3_1.Document) => {
+	let count = 0;
+	for (const path in openApiDoc.paths) {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		for (const method in openApiDoc.paths[path]) {
+			count++;
+		}
+	}
+	return count;
+}
+
+export const pathCount = (openApiDoc: OpenAPIV3_1.Document) => {
+	let count = 0;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	for (const path in openApiDoc.paths) {
+		count++;
+	}
+	return count;
+}
+
+
+export const openApiStore: Writable<OpenAPIV3_1.Document> = writable(blankSpec);
 
 export enum HttpMethods {
 	GET = 'get',

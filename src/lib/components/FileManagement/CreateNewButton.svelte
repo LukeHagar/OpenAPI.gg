@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { localStoragePrefix } from '$lib';
+	import { localStoragePrefix, newSpec } from '$lib';
+	import { setSpec } from '$lib/db';
 </script>
 
 <button
@@ -10,10 +11,9 @@
 				'This operation clears all the current values, unsaved data will be lost, are you sure?'
 			)
 		) {
-			// remove `openApi` from localStorage
-			localStorage.removeItem(`${localStoragePrefix}openApi`);
+			setSpec(newSpec);
 		}
 	}}
 >
-	Create New
+	New
 </button>

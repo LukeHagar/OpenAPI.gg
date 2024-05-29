@@ -11,8 +11,9 @@
 			};
 		}
 		console.log($selectedSpec);
-		$selectedSpec.id = undefined;
-		db.apiSpecs.put($selectedSpec);
+		const newSpec = structuredClone($selectedSpec);
+		newSpec.id = undefined;
+		db.apiSpecs.put(newSpec);
 	}
 </script>
 
