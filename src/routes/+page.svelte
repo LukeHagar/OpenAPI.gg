@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CreateNewButton from '$lib/components/FileManagement/CreateNewButton.svelte';
+	import DeleteAllButton from '$lib/components/FileManagement/DeleteAllButton.svelte';
 	import DeleteButton from '$lib/components/FileManagement/DeleteButton.svelte';
 	import LoadButton from '$lib/components/FileManagement/LoadButton.svelte';
 	import SaveButton from '$lib/components/FileManagement/SaveButton.svelte';
@@ -56,6 +57,7 @@
 	<SaveNewButton />
 	<CreateNewButton />
 	<Upload />
+	<DeleteAllButton />
 </div>
 <!-- <div class="w-full h-full flex flex-col items-center justify-center grow">
 	<h1 class="h1">
