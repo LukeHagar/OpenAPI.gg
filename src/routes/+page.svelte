@@ -5,10 +5,18 @@
 	import SaveButton from '$lib/components/FileManagement/SaveButton.svelte';
 	import SaveNewButton from '$lib/components/FileManagement/SaveNewButton.svelte';
 	import Upload from '$lib/components/FileManagement/Upload.svelte';
-	import { db, selectedSpec } from '$lib/db';
+	import { db, selectedSpec, setSpec } from '$lib/db';
 	import { liveQuery } from 'dexie';
 
 	let apiSpecs = liveQuery(() => db.apiSpecs.toArray());
+
+	let loaded = false;
+	apiSpecs.subscribe((specs) => {
+		if (loaded) return;
+		if (specs.length > 0) {
+			setSpec(specs[0]);
+		}
+	});
 	$: console.log($apiSpecs);
 </script>
 
