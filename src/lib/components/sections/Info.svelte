@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Info from '../icons/Info.svelte';
 	import LicenseAtom from '../atoms/LicenseAtom.svelte';
 	import { openApiStore } from '$lib';
 </script>
