@@ -30,6 +30,7 @@ export const blankSpec: OpenAPIV3_1.Document = {
 	},
 	servers: [],
 	paths: {},
+	webhooks: {},
 	components: {},
 	security: [],
 	tags: [],

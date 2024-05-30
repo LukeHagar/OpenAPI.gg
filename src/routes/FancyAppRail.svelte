@@ -10,7 +10,12 @@
 	$: console.log($apiSpecs);
 </script>
 
-<AppRail width="w-28" aspectRatio="aspect-[3/2]" background="variant-ghost-surface" border="ring-0">
+<AppRail
+	width="w-28"
+	aspectRatio="aspect-[20/14]"
+	background="variant-ghost-surface"
+	border="ring-0"
+>
 	<svelte:fragment slot="lead">
 		<div>
 			<AppRailAnchor href="/">
@@ -76,7 +81,7 @@
 				d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
 			/>
 		</svg>
-		Authentication
+		Security
 	</AppRailAnchor>
 	<AppRailAnchor href="/paths" selected={$page.url.pathname === '/paths'}>
 		<svg
@@ -94,6 +99,40 @@
 			/>
 		</svg>
 		Paths
+	</AppRailAnchor>
+	<AppRailAnchor href="/webhooks" selected={$page.url.pathname === '/webhooks'}>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke-width="1.5"
+			stroke="currentColor"
+			class="size-6 mx-auto"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"
+			/>
+		</svg>
+		Webhooks
+	</AppRailAnchor>
+	<AppRailAnchor href="/components" selected={$page.url.pathname === '/components'}>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke-width="1.5"
+			stroke="currentColor"
+			class="size-6 mx-auto"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"
+			/>
+		</svg>
+		Components
 	</AppRailAnchor>
 	<AppRailAnchor href="/stats" selected={$page.url.pathname === '/stats'}>
 		<svg
