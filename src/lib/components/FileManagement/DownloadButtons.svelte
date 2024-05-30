@@ -5,11 +5,9 @@
 
 	$: fileName = filenamify($openApiStore?.info?.title) || 'openapi';
 
-	// TODO: Refactor this to use the new storage instead of localstorage
 	const saveYAML = () => {
-		const openApiStorage = localStorage.getItem(`${localStoragePrefix}openApi`);
-		if (!openApiStorage) return;
-		const openApi = JSON.parse(openApiStorage);
+		if (!$openApiStore) return;
+		const openApi = $openApiStore;
 		const blob = new Blob([stringify(openApi, null, { indent: 2, aliasDuplicateObjects: false })], {
 			type: 'application/yaml'
 		});
@@ -21,12 +19,10 @@
 		a.click();
 		window.URL.revokeObjectURL(url);
 	};
-	
-	// TODO: Refactor this to use the new storage instead of localstorage
+
 	const saveJSON = () => {
-		const openApiStorage = localStorage.getItem(`${localStoragePrefix}openApi`);
-		if (!openApiStorage) return;
-		const openApi = JSON.parse(openApiStorage);
+		if (!$openApiStore) return;
+		const openApi = $openApiStore;
 		const blob = new Blob([JSON.stringify(openApi, null, 2)], {
 			type: 'application/json'
 		});

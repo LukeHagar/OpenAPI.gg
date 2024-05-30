@@ -5,6 +5,7 @@ export const localStoragePrefix = 'openapigen-';
 
 export const blankSpec: OpenAPIV3_1.Document = {
 	openapi: '3.1.0', // OpenAPI version
+	jsonSchemaDialect: 'https://json-schema.org/draft/2020-12/schema', // JSON Schema version
 	info: {
 		/** Title of the API (required) */
 		title: '',
