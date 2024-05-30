@@ -1,4 +1,4 @@
-import type { OpenAPIV3_1 } from './openAPITypes';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import { writable, type Writable } from 'svelte/store';
 
 export const localStoragePrefix = 'openapigen-';
@@ -39,7 +39,7 @@ export const blankSpec: OpenAPIV3_1.Document = {
 		description: '',
 		url: ''
 	}
-}
+};
 
 export const operationCount = (openApiDoc: OpenAPIV3_1.Document) => {
 	let count = 0;
@@ -50,7 +50,7 @@ export const operationCount = (openApiDoc: OpenAPIV3_1.Document) => {
 		}
 	}
 	return count;
-}
+};
 
 export const pathCount = (openApiDoc: OpenAPIV3_1.Document) => {
 	let count = 0;
@@ -59,8 +59,7 @@ export const pathCount = (openApiDoc: OpenAPIV3_1.Document) => {
 		count++;
 	}
 	return count;
-}
-
+};
 
 export const openApiStore: Writable<OpenAPIV3_1.Document> = writable(blankSpec);
 
