@@ -3,7 +3,6 @@
 	import { page } from '$app/stores';
 	import { liveQuery } from 'dexie';
 	import { db } from '$lib/db';
-
 	import DownloadButtons from '$lib/components/FileManagement/DownloadButtons.svelte';
 
 	let apiSpecs = liveQuery(() => db.apiSpecs.toArray());
