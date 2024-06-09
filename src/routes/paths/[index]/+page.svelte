@@ -34,7 +34,12 @@
 			explode: false, // Defaults to true when style is form, otherwise false.
 			schema: {},
 			content: {},
-			example: {}, // any -> Example and Examples are mutually exclusive
+			example: {
+				summary: '',
+				description: '',
+				value: undefined, // any -> Example and Examples are mutually exclusive
+				externalValue: undefined
+			}, // any -> Example and Examples are mutually exclusive
 			examples: {},
 		});
 	});

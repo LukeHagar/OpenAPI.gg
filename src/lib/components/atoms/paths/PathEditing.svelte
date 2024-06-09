@@ -2,9 +2,10 @@
 	import type { OpenAPIV3_1 } from 'openapi-types';
 	import ServerInput from '../ServerInput.svelte';
 	import ParameterInput from '../ParameterInput.svelte';
-	import { version } from '$app/environment';
 
 	export let path: OpenAPIV3_1.PathItemObject;
+
+	let newParameter = 'query';
 
 	export const editedPath: OpenAPIV3_1.PathItemObject = {
 		summary: path.summary ?? '',
@@ -42,6 +43,10 @@
 		editedPath.parameters.splice(index, 1);
 		editedPath.parameters = editedPath.parameters;
 	};
+
+    const addParameter = () => {
+        
+    }
 </script>
 
 <div class="flex flex-col gap-1">
@@ -94,23 +99,35 @@
 	<p class="font-bold h5">Parameters</p>
 	{#if editedPath.parameters}
 		{#each editedPath.parameters as parameter, i}
-			<div class="ring-1 ring-surface-600-300-token rounded-container-token p-2 space-y-2">
+			<div class="card ring-1 ring-surface-600-300-token rounded-container-token p-2 space-y-2">
 				<!-- If the parameter is a reference: show the reference link -->
 				{#if '$ref' in parameter}
 					<p class="text-sm">This parameter is a reference</p>
 				{:else}
-					<ParameterInput parameter={parameter} />
+					<ParameterInput bind:parameter />
 				{/if}
-				<button
-					type="button"
-					class="btn btn-sm variant-filled-error"
-					on:click={() => {
-						removeParameter(i);
-					}}
-				>
-					Remove Parameter
-				</button>
+				{#if parameter.in !== 'path'}
+					<div class="flex justify-center">
+						<button
+							type="button"
+							class="btn btn-sm variant-filled-error"
+							on:click={() => {
+								removeParameter(i);
+							}}
+						>
+							Remove Parameter
+						</button>
+					</div>
+				{/if}
 			</div>
 		{/each}
 	{/if}
+	<span class="mx-auto flex gap-2">
+		<select name="parameter-location" class="select" bind:value={newParameter}>
+			<option value="query">Query</option>
+			<option value="header">Header</option>
+			<option value="cookie">Cookie</option>
+		</select>
+		<button type="button" class="btn btn-sm variant-filled-primary"> Add {newParameter} parameter </button>
+	</span>
 </div>
