@@ -3,122 +3,57 @@
 	import { SlideToggle } from '@skeletonlabs/skeleton';
 	import ExampleInput from '$lib/components/atoms/ExampleInput.svelte';
 
-	export let variableName: string;
-	export let value: OpenAPIV3.ParameterObject;
-	export let location: 'path' | 'query' | 'header' | 'cookie';
+	export let parameter: OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject;
 
-	value.name = variableName;
-	value.in = location;
-	if (location === 'path') value.required = true;
-	let multipleExamples = value.examples && Object.keys(value.examples).length > 1;
+	// if the parameter is a reference, we need to link to the reference
+	let isReference = '$ref' in parameter;
 
-	const addParameterExample = () => {
-		const exampleName = prompt('Enter a name for the example');
-		if (!exampleName) return;
-		// @ts-expect-error - working we are setting a new key
-		value.examples[exampleName] = {
-			$ref: '',
-			summary: '',
-			description: '',
-			value: '',
-			externalValue: ''
-		};
-	};
+	parameter = isReference
+		? (parameter as OpenAPIV3.ReferenceObject)
+		: (parameter as OpenAPIV3.ParameterObject);
+
+	// if the parameter is a path parameter, we need to limit the editing options
+	// @ts-expect-error parameter.in has to exist if the parameter is not a reference
+	let isPathParameter = !isReference && parameter.in === 'path';
 </script>
 
 <div class="card py-6 px-4 flex flex-col gap-4 text-sm">
-	<h4 class="h4">&lbrace;{variableName}&rbrace;</h4>
-
-	<span class="flex items-center gap-2">
-		<p>Location:</p>
-		<select
-			name="location"
-			class="select w-min"
-			disabled={location === 'path'}
-			bind:value={location}
-		>
-			<option value="path">Path</option>
-			<option value="query">Query</option>
-			<option value="header">Header</option>
-			<option value="cookie">Cookie</option>
-		</select>
-	</span>
-
-	<label class="space-y-2">
-		<p>Description</p>
-		<textarea
-			class="textarea"
-			bind:value={value.description}
-			placeholder="Description of the parameter. Supports markdown."
-		/>
-	</label>
-	<div class="flex flex-row gap-16">
-		<SlideToggle name="required" disabled={location === 'path'} bind:checked={value.required}>
-			Required
-		</SlideToggle>
-		<SlideToggle name="deprecated" bind:checked={value.deprecated} disabled={location === 'path'}>
-			Deprecated
-		</SlideToggle>
-		<SlideToggle
-			name="allowEmptyValue"
-			bind:value={value.allowEmptyValue}
-			disabled={location === 'path'}
-		>
-			Allow Empty Value
-		</SlideToggle>
-	</div>
-	<label class="space-y-2">
-		<p>Style</p>
-		<select name="style" class="select" bind:value={value.style}>
-			<option value={undefined} selected>none</option>
-			<option value="matrix">Matrix</option>
-			<option value="label">Label</option>
-			<option value="form">Form</option>
-			<option value="simple">Simple</option>
-			<option value="spaceDelimited">Space Delimited</option>
-			<option value="pipeDelimited">Pipe Delimited</option>
-			<option value="deepObject">Deep Object</option>
-		</select>
-	</label>
-	<div class="flex flex-row gap-16">
-		<SlideToggle name="explode" bind:checked={value.explode}>Explode</SlideToggle>
-		<SlideToggle name="allowReserved" bind:checked={value.allowReserved}>Allow Reserved</SlideToggle
-		>
-	</div>
-	<label class="space-y-2">
-		<p>Schema</p>
-		<!-- Subject to change -->
-		<select class="select" name="schema" bind:value={value.schema}>
-			<option value="schema">Schema not yet implemented</option>
-		</select>
-	</label>
-	<SlideToggle
-		name="multiExample"
-		bind:checked={multipleExamples}
-		on:click={() => {
-			if (!value.examples) value.examples = {};
-		}}
-	>
-		Multiple Examples?
-	</SlideToggle>
-	{#if multipleExamples}
-		<div class="space-y-2">
-			<p>Examples</p>
-			{#each Object.keys(value.examples) as example}
-				<ExampleInput bind:example={value.examples[example]} name={example} />
-			{/each}
-			<button
-				type="button"
-				class="btn btn-sm variant-filled-primary"
-				on:click={addParameterExample}
-			>
-				Add Example
-			</button>
-		</div>
+	{#if isReference}
+		<p class="text-xs text-error">This parameter is a reference and cannot be edited here.</p>
 	{:else}
-		<label class="space-y-2">
-			<p>Example</p>
-			<input type="text" class="input" name="example" placeholder="An example of the value." />
-		</label>
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+			{#if isPathParameter}
+				<p class="h3 font-bold">{parameter.name}</p>
+			{:else}
+				<label>
+					<p>Name</p>
+					<input
+						type="text"
+						name="name"
+						class="input"
+						placeholder="Name"
+						bind:value={parameter.name}
+					/>
+				</label>
+			{/if}
+			<label>
+				<p>Location</p>
+				<select name="in" class="select" bind:value={parameter.in} disabled={isPathParameter}>
+					<option value="path">Path</option>
+					<option value="query">Query</option>
+					<option value="header">Header</option>
+					<option value="cookie">Cookie</option>
+				</select>
+			</label>
+			<label>
+				<p>Description</p>
+				<textarea
+					name="description"
+					class="textarea"
+					bind:value={parameter.description}
+					placeholder="Describe the parameter. Supports Markdown."
+				/>
+			</label>
+		</div>
 	{/if}
 </div>
