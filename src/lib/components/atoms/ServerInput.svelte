@@ -84,53 +84,57 @@
 						</div>
 					</svelte:fragment>
 					<svelte:fragment slot="content">
-						<table class="table my-2">
-							<tbody>
-								{#each Object.keys(server.variables) as variable, index}
-									<tr>
-										<td class="text-center">
-											<div class="flex justify-center items-center">
-												<p class="text-lg">{variable}</p>
-											</div>
-										</td>
-										<td>
-											<label>
-												<span>Default</span>
-												<input
-													class="input"
-													placeholder="default"
-													type="text"
-													bind:value={server.variables[variable].default}
-												/>
-											</label>
-										</td>
-										<td>
-											<label>
-												<span>Description</span>
-												<textarea
-													class="textarea"
-													placeholder="description"
-													bind:value={server.variables[variable].description}
-												/>
-											</label>
-										</td>
-										<td class="!w-1/3">
-											<div>
-												<label for="Enum">
-													<span>Enum</span>
-													<InputChip
-														label="Enum"
-														bind:value={server.variables[variable].enum}
-														name="enum"
-														placeholder="enum (optional) - press enter to add more items"
+						{#if Object.keys(server.variables).length === 0}
+							<p class="text-sm">No variables found in the URL.</p>
+						{:else}
+							<table class="table my-2">
+								<tbody>
+									{#each Object.keys(server.variables) as variable, index}
+										<tr>
+											<td class="text-center">
+												<div class="flex justify-center items-center">
+													<p class="text-lg">{variable}</p>
+												</div>
+											</td>
+											<td>
+												<label>
+													<span>Default</span>
+													<input
+														class="input"
+														placeholder="default"
+														type="text"
+														bind:value={server.variables[variable].default}
 													/>
 												</label>
-											</div>
-										</td>
-									</tr>
-								{/each}
-							</tbody>
-						</table>
+											</td>
+											<td>
+												<label>
+													<span>Description</span>
+													<textarea
+														class="textarea"
+														placeholder="description"
+														bind:value={server.variables[variable].description}
+													/>
+												</label>
+											</td>
+											<td class="!w-1/3">
+												<div>
+													<label for="Enum">
+														<span>Enum</span>
+														<InputChip
+															label="Enum"
+															bind:value={server.variables[variable].enum}
+															name="enum"
+															placeholder="enum (optional) - press enter to add more items"
+														/>
+													</label>
+												</div>
+											</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						{/if}
 					</svelte:fragment>
 				</AccordionItem>
 			</Accordion>
