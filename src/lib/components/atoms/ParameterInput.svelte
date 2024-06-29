@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { OpenAPIV3 } from '$lib/openAPITypes';
+	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
 	import { SlideToggle } from '@skeletonlabs/skeleton';
 	import ExampleInput from '$lib/components/atoms/ExampleInput.svelte';
 
 	export let variableName: string;
-	export let value: OpenAPIV3.ParameterObject;
+	export let value: OpenAPIV3_1.ParameterObject;
 	export let location: 'path' | 'query' | 'header' | 'cookie';
 
 	value.name = variableName;

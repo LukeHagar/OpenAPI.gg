@@ -1,4 +1,4 @@
-import { blankSpec, openApiStore } from "$lib";
+import { blankSpec } from "$lib";
 import type { OpenAPIV3_1 } from "$lib/openAPITypes";
 import Dexie, { type Table } from 'dexie';
 import { writable, type Writable } from "svelte/store";
@@ -8,12 +8,7 @@ export const newSpec: APISpec = {
     spec: blankSpec
 }
 
-export const selectedSpec: Writable<APISpec | undefined> = writable(newSpec)
-
-export const setSpec = (spec: APISpec) => {
-    selectedSpec.set(spec);
-    openApiStore.set(spec.spec);
-}
+export const selectedSpec: Writable<APISpec> = writable(newSpec)
 
 export interface APISpec {
     id?: string;

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { OpenAPIV3 } from '$lib/openAPITypes';
+	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
 	import { SlideToggle } from '@skeletonlabs/skeleton';
 
-	export let example: OpenAPIV3.ExampleObject;
+	export let example: OpenAPIV3_1.ExampleObject | OpenAPIV3_1.ReferenceObject;
 	export let name: string;
 
 	let schema = false;
@@ -24,13 +24,17 @@
 			<p>Description</p>
 			<textarea class="textarea" name="description" bind:value={example.description} />
 		</label>
-		<label>
-			<p>Value</p>
-			<input type="text" class="input" name="value" bind:value={example.value} />
-		</label>
-		<label>
-			<p>External Value</p>
-			<input type="text" class="input" name="externalValue" bind:value={example.externalValue} />
-		</label>
+		{#if 'value' in example}
+			<label>
+				<p>Value</p>
+				<input type="text" class="input" name="value" bind:value={example.value} />
+			</label>
+		{/if}
+		{#if 'externalValue' in example}
+			<label>
+				<p>External Value</p>
+				<input type="text" class="input" name="externalValue" bind:value={example.externalValue} />
+			</label>
+		{/if}
 	{/if}
 </div>

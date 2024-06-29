@@ -1,12 +1,8 @@
 <script lang="ts">
-	import { pathTemplate } from '$lib/pathTemplate';
 	import {
 		addPath,
 		deletePath,
-		openApiStore,
-		pathRegex,
-		renamePath,
-		sortPathsAlphabetically
+		renamePath
 	} from '$lib';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	const modalStore = getModalStore();

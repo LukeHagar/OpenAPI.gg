@@ -5,7 +5,12 @@
 
 	export let schema: OpenAPIV3_1.SecuritySchemeObject;
 
-	let availableFlows: string[] = ['implicit', 'password', 'clientCredentials', 'authorizationCode'];
+	let availableFlows: ('implicit' | 'password' | 'clientCredentials' | 'authorizationCode')[] = [
+		'implicit',
+		'password',
+		'clientCredentials',
+		'authorizationCode'
+	];
 
 	// remove flows that are already in Object.keys(schema.flows)
 	availableFlows = availableFlows.filter((flow) => {
@@ -18,7 +23,7 @@
 		return !Object.keys(schema.flows).includes(flow);
 	});
 
-	let flowType: string;
+	let flowType: 'implicit' | 'password' | 'clientCredentials' | 'authorizationCode';
 	const addOauthFlow = () => {
 		if (!flowType) return;
 		// @ts-expect-error - security schema definition is lacking a bit
@@ -27,7 +32,7 @@
 		availableFlows = availableFlows.filter((flow) => flow !== flowType);
 	};
 
-	const removeOauthFlow = (flow: string) => {
+	const removeOauthFlow = (flow: 'implicit' | 'password' | 'clientCredentials' | 'authorizationCode') => {
 		// @ts-expect-error - security schema definition is lacking a bit
 		let tempFlows = schema.flows;
 		delete tempFlows[flow];

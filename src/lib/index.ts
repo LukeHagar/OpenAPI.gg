@@ -61,8 +61,6 @@ export const pathCount = (openApiDoc: OpenAPIV3_1.Document) => {
 	return count;
 };
 
-export const openApiStore: Writable<OpenAPIV3_1.Document> = writable(blankSpec);
-
 export enum HttpMethods {
 	GET = 'get',
 	PUT = 'put',
