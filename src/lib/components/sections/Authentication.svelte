@@ -68,15 +68,15 @@
 			<hr />
 		{/each}
 
-		<span class="flex justify-center items-center gap-2 max-w-sm mx-auto">
-			<select name="security-schema" bind:value={selectedSchema} class="input w-fit text-sm">
+		<span class="flex flex-wrap justify-center items-center gap-2 max-w-sm mx-auto">
+			<select name="security-schema" bind:value={selectedSchema} class="input w-fit text-sm grow">
 				<option value="basicAuth" selected>Basic Auth</option>
 				<option value="bearerAuth">Bearer Auth</option>
 				<option value="ApiKeyAuth">API Key Auth</option>
 				<option value="openId">OpenID</option>
 				<option value="oAuthSample">OAuth2</option>
 			</select>
-			<button type="button" class="btn text-sm variant-filled-primary" on:click={addSecuritySchema}>
+			<button type="button" class="btn text-sm variant-filled-primary grow" on:click={addSecuritySchema}>
 				Add Security Schema
 			</button>
 		</span>
