@@ -1,18 +1,15 @@
 <script lang="ts">
-	import { openApiStore } from '$lib';
-	import { db, selectedSpec } from '$lib/db';
+	import {  loadSpec, saveSpec, selectedSpec } from '$lib/db';
+	import type { CssClasses } from '@skeletonlabs/skeleton';
+	
+	export let width: CssClasses = "w-full"
 
-	function onSave(e: Event): void {
+	async function onSave(e: Event): Promise<void> {
 		console.log('Save button clicked');
-		if (!$selectedSpec) {
-			$selectedSpec = {
-				name: 'New OpenAPI Spec',
-				spec: $openApiStore
-			};
-		}
-		console.log($selectedSpec);
-		db.apiSpecs.put($selectedSpec, $selectedSpec.id);
+		const spec = await saveSpec($selectedSpec);
+		if(spec) loadSpec(spec);
 	}
+
 </script>
 
-<button class="btn variant-ghost-success" on:click={onSave}> Save </button>
+<button class="btn variant-ghost-success {width}" on:click={onSave}> Save </button>

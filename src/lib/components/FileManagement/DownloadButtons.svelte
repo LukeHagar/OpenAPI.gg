@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { localStoragePrefix, openApiStore } from '$lib';
+	import { selectedSpec } from '$lib/db';
 	import filenamify from 'filenamify';
 	import { stringify } from 'yaml';
 
-	$: fileName = filenamify($openApiStore?.info?.title) || 'openapi';
+	$: fileName = filenamify($selectedSpec.spec?.info?.title) || 'openapi';
 
 	const saveYAML = () => {
-		if (!$openApiStore) return;
-		const openApi = $openApiStore;
+		if (!$selectedSpec.spec) return;
+		const openApi = $selectedSpec.spec;
 		const blob = new Blob([stringify(openApi, null, { indent: 2, aliasDuplicateObjects: false })], {
 			type: 'application/yaml'
 		});
@@ -21,8 +21,8 @@
 	};
 
 	const saveJSON = () => {
-		if (!$openApiStore) return;
-		const openApi = $openApiStore;
+		if (!$selectedSpec.spec) return;
+		const openApi = $selectedSpec.spec;
 		const blob = new Blob([JSON.stringify(openApi, null, 2)], {
 			type: 'application/json'
 		});

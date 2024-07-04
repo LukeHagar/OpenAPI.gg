@@ -104,9 +104,12 @@
 	{#if multipleExamples}
 		<div class="space-y-2">
 			<p>Examples</p>
-			{#each Object.keys(value.examples) as example}
-				<ExampleInput bind:example={value.examples[example]} name={example} />
-			{/each}
+			{#if value.examples}
+				{#each Object.entries(value.examples) as example}
+					<ExampleInput bind:example={example[1]} name={example[0]} />
+				{/each}
+				
+			{/if}
 			<button
 				type="button"
 				class="btn btn-sm variant-filled-primary"

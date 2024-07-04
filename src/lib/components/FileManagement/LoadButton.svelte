@@ -1,12 +1,15 @@
 <script lang="ts">
-	import { setSpec, type APISpec } from '$lib/db';
+	import { loadSpec, type APISpec } from '$lib/db';
+	import type { CssClasses } from '@skeletonlabs/skeleton';
 
 	export let spec: APISpec;
 
+		export let width: CssClasses = "w-full"
+
 	function onLoad(e: Event): void {
 		console.log('load button clicked');
-		setSpec(spec);
+		loadSpec(spec);
 	}
 </script>
 
-<button class="btn variant-ghost-warning" on:click={onLoad}> Load </button>
+<button class="btn variant-ghost-warning {width}" on:click={onLoad}> Load </button>

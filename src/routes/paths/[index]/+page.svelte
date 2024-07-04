@@ -1,21 +1,26 @@
 <script lang="ts">
-	import { HttpMethods, openApiStore } from '$lib';
+	import { HttpMethods } from '$lib';
 	import ParameterInput from '$lib/components/atoms/ParameterInput.svelte';
 	import { getPathVariables } from '$lib/pathHandling';
-	import type { OpenAPIV3 } from '$lib/openAPITypes';
+	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
 	import type { PageData } from './$types';
-	import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
+	import { Accordion, AccordionItem, filter } from '@skeletonlabs/skeleton';
+	import { selectedSpec } from '$lib/db';
 
 	export let data: PageData;
 
+	const filterParams = (param: OpenAPIV3_1.ParameterObject | OpenAPIV3_1.ReferenceObject): param is OpenAPIV3_1.ParameterObject => {
+		return !("$ref" in param);
+	};
+
 	let newParam: 'query' | 'header' | 'cookie' = 'query';
-	let tempPath: OpenAPIV3.PathItemObject = {
+	let tempPath: OpenAPIV3_1.PathItemObject = {
 		parameters: []
 	};
-	openApiStore.subscribe((store) => {
+	selectedSpec.subscribe((store) => {
 		if (!data.pathName) return;
-		if (store.paths == undefined) tempPath = {};
-		if (!store.paths!.hasOwnProperty(data.pathName)) tempPath = {};
+		if (store.spec.paths == undefined) tempPath = {};
+		if (!store.spec.paths!.hasOwnProperty(data.pathName)) tempPath = {};
 		// @ts-expect-error - working with a known not empty object
 		tempPath = store.paths[data.pathName] ?? {};
 
@@ -96,9 +101,11 @@
 				<h4 class="h4">Parameters</h4>
 			</svelte:fragment>
 			<svelte:fragment slot="content">
-				{#each tempPath.parameters as param}
-					<ParameterInput variableName={param.name} bind:value={param} location="path" />
-				{/each}
+				{#if tempPath.parameters}
+					{#each tempPath.parameters.filter(filterParams) as param}
+						<ParameterInput variableName={param.name} bind:value={param} location="path" />
+					{/each}
+				{/if}
 
 				<span class="flex items-center gap-2">
 					<select name="newParameter" bind:value={newParam} class="select w-min">
@@ -128,7 +135,8 @@
 								type="checkbox"
 								class="checkbox"
 								on:input={(event) => {
-									if (event.target.checked) {
+									//@ts-expect-error - working with a known object
+									if (event.target?.checked) {
 										tempPath[method] = {
 											tags: [],
 											summary: '',

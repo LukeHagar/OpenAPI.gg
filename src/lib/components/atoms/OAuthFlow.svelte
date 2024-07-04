@@ -23,7 +23,7 @@
 				bind:value={flow.authorizationUrl}
 			/>
 		</label>
-		{#if type === 'authorizationCode'}
+		{#if type === 'authorizationCode' && 'tokenUrl' in flow}
 			<label>
 				<h5 class="h5">Token URL</h5>
 				<p class="text-sm">The token URL to be used for this flow.</p>

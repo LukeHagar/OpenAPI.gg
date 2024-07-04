@@ -139,7 +139,7 @@ export const isValidPath = (path: string) => {
 	// check if path is a valid path
 	const pathWithoutVariables = path.replaceAll('{', '').replaceAll('}', '');
 	console.log(pathWithoutVariables);
-	const pathRegex = /(\/[a-zA-Z-]+)+|\//gm;
+	const pathRegex = /(\/[a-zA-Z0-9]+)+|\//gm;
 	const pathParts = pathWithoutVariables.match(pathRegex);
 	// the fallback is to return false if the pathParts array is null
 	return pathParts?.length === 1;
@@ -150,11 +150,11 @@ export const sortPathsAlphabetically = () => {
 	const tempPathObject = {};
 	const store = get(selectedSpec);
 	// @ts-expect-error - we are working with an initially empty object
-	Object.keys(store.paths)
+	Object.keys(store.spec.paths)
 		.sort()
 		.forEach((key) => {
 			// @ts-expect-error - we are working with initially empty objects
-			tempPathObject[key] = store.paths[key];
+			tempPathObject[key] = store.spec.paths[key];
 		});
 
 	// update path object

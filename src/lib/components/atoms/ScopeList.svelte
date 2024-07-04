@@ -1,20 +1,25 @@
 <script lang="ts">
-	import type { Flows } from '$lib/types/auth';
+	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
 
-	export let flow: Flows;
+	export let flow: OpenAPIV3_1.OAuth2Scopes;
 
 	const addScope = () => {
-		flow.scopes = [...flow.scopes, [{ scope: '', description: '' }]];
+		// Correctly adds a new key with a string value to the scopes object
+		// @ts-expect-error - This is a valid operation
+		flow.scopes["newScope"] = "placeholder";
 	};
-	const removeScope = (index: number) => {
-		flow.scopes = flow.scopes.filter((_, i) => i !== index);
+
+	const removeScope = (key: string) => {
+		// To remove a key from an object, use the delete operator instead of setting it to undefined
+		//@ts-expect-error - This is a valid operation
+		delete flow.scopes[key];
 	};
 </script>
 
 <h4 class="h4">Scopes</h4>
 <table class="table">
 	<tbody>
-		{#each flow.scopes as scope, index}
+		{#each Object.entries(flow.scopes) as scope, index}
 			{#each scope as item, i}
 				<tr>
 					<td class="px-4">
@@ -23,16 +28,7 @@
 							name="scope{index}-{i}"
 							class="input"
 							placeholder="scope"
-							bind:value={item.scope}
-						/>
-					</td>
-					<td class="px-2">
-						<input
-							type="text"
-							name="description{index}-{i}"
-							class="input"
-							placeholder="a short description of the scope (optional)"
-							bind:value={item.description}
+							bind:value={item}
 						/>
 					</td>
 					<td class="max-w-16 px-2">
@@ -40,7 +36,7 @@
 							type="button"
 							class="btn variant-ringed-error hover:variant-filled-error"
 							on:click={() => {
-								removeScope(index);
+								removeScope(item);
 							}}
 						>
 							Remove Scope

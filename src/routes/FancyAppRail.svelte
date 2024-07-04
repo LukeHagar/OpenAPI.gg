@@ -1,12 +1,7 @@
 <script lang="ts">
-	import { AppRail, AppRailAnchor, LightSwitch } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
-	import { liveQuery } from 'dexie';
-	import { db } from '$lib/db';
 	import DownloadButtons from '$lib/components/FileManagement/DownloadButtons.svelte';
-
-	let apiSpecs = liveQuery(() => db.apiSpecs.toArray());
-	$: console.log($apiSpecs);
+	import { AppRail, AppRailAnchor, LightSwitch } from '@skeletonlabs/skeleton';
 </script>
 
 <AppRail
@@ -133,23 +128,7 @@
 		</svg>
 		Components
 	</AppRailAnchor>
-	<AppRailAnchor href="/stats" selected={$page.url.pathname === '/stats'}>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			viewBox="0 0 24 24"
-			stroke-width="1.5"
-			stroke="currentColor"
-			class="size-6 mx-auto"
-		>
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
-			/>
-		</svg>
-		Stats
-	</AppRailAnchor>
+	
 
 	<svelte:fragment slot="trail">
 		<div class="p-2">

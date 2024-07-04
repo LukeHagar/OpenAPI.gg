@@ -1,13 +1,17 @@
 <script lang="ts">
 	import { addPath } from '$lib';
-	import { openApiStore, sortPathsAlphabetically } from '$lib';
-	import type { OpenAPIV3 } from '$lib/openAPITypes';
+	import { sortPathsAlphabetically } from '$lib';
+	import { selectedSpec } from '$lib/db';
+	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
 	import PathListItem from '../atoms/PathListItem.svelte';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 
-	let paths: OpenAPIV3.PathsObject = {};
-	// @ts-expect-error - working with a potentially empty object
-	openApiStore.subscribe((store) => (paths = store.paths));
+	let paths: OpenAPIV3_1.PathsObject = {};
+	selectedSpec.subscribe((store) => {
+		if (store.spec.paths) {
+			paths = store.spec.paths;
+		}
+	});
 
 	const modalStore = getModalStore();
 </script>
