@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { OpenAPIV3 } from '$lib/openAPITypes';
+	import type { OpenAPIV3_1 } from '$lib/openAPITypes';
 	import { SlideToggle } from '@skeletonlabs/skeleton';
 	import ExampleInput from '$lib/components/atoms/ExampleInput.svelte';
 
 	export let variableName: string;
-	export let value: OpenAPIV3.ParameterObject;
+	export let value: OpenAPIV3_1.ParameterObject;
 	export let location: 'path' | 'query' | 'header' | 'cookie';
 
 	value.name = variableName;
@@ -104,9 +104,12 @@
 	{#if multipleExamples}
 		<div class="space-y-2">
 			<p>Examples</p>
-			{#each Object.keys(value.examples) as example}
-				<ExampleInput bind:example={value.examples[example]} name={example} />
-			{/each}
+			{#if value.examples}
+				{#each Object.entries(value.examples) as example}
+					<ExampleInput bind:example={example[1]} name={example[0]} />
+				{/each}
+				
+			{/if}
 			<button
 				type="button"
 				class="btn btn-sm variant-filled-primary"

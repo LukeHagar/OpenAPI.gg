@@ -1,8 +1,8 @@
 import { get } from 'svelte/store';
 import type { ModalSettings, ModalStore } from '@skeletonlabs/skeleton';
 import { pathTemplate } from './pathTemplate';
-import { openApiStore } from '$lib';
-import type { OpenAPIV3 } from './openAPITypes';
+import type { OpenAPIV3_1 } from './openAPITypes';
+import { selectedSpec } from './db';
 
 export const pathVariables = /\{([^}]+)\}/gm;
 
@@ -39,9 +39,9 @@ export const addPath = (modalStore: ModalStore, startingPoint: string = '/') => 
 			}
 
 			// create path object
-			const store = get(openApiStore);
-			if (!store.paths) store.paths = {};
-			store.paths[userPath] = pathTemplate;
+			const store = get(selectedSpec);
+			if (!store.spec.paths) store.spec.paths = {};
+			store.spec.paths[userPath] = pathTemplate;
 
 			// sort paths alphabetically
 			sortPathsAlphabetically();
@@ -80,16 +80,16 @@ export const renamePath = (modalStore: ModalStore, oldPath: string) => {
 			}
 
 			// create path object
-			const store = get(openApiStore);
-			if (!store.paths) store.paths = {};
+			const store = get(selectedSpec);
+			if (!store.spec.paths) store.spec.paths = {};
 
 			// copy old path object to new path object
-			store.paths[userPath] = store.paths[oldPath];
+			store.spec.paths[userPath] = store.spec.paths[oldPath];
 			// delete old path object
-			delete store.paths[oldPath];
+			delete store.spec.paths[oldPath];
 
 			// add path to store
-			openApiStore.set(store);
+			selectedSpec.set(store);
 
 			// sort paths alphabetically
 			sortPathsAlphabetically();
@@ -109,12 +109,12 @@ export const deletePath = (modalStore: ModalStore, path: string) => {
 		// TRUE if confirm pressed, FALSE if cancel pressed
 		response: (r: boolean) => {
 			if (r === false) return;
-			const store = get(openApiStore);
+			const store = get(selectedSpec);
 			// check if path exists
-			if (!store.paths) return;
-			if (!(path in store.paths)) return;
-			delete store.paths[path];
-			openApiStore.set(store);
+			if (!store.spec.paths) return;
+			if (!(path in store.spec.paths)) return;
+			delete store.spec.paths[path];
+			selectedSpec.set(store);
 		}
 	};
 	modalStore.trigger(modal);
@@ -122,8 +122,8 @@ export const deletePath = (modalStore: ModalStore, path: string) => {
 
 /// checks if a given path already exists
 export const pathExists = (path: string) => {
-	const store = get(openApiStore);
-	return !(path in store.paths!);
+	const store = get(selectedSpec);
+	return !(path in store.spec.paths!);
 };
 
 /// checks if a given path is valid
@@ -139,7 +139,7 @@ export const isValidPath = (path: string) => {
 	// check if path is a valid path
 	const pathWithoutVariables = path.replaceAll('{', '').replaceAll('}', '');
 	console.log(pathWithoutVariables);
-	const pathRegex = /(\/[a-zA-Z-]+)+|\//gm;
+	const pathRegex = /(\/[a-zA-Z0-9]+)+|\//gm;
 	const pathParts = pathWithoutVariables.match(pathRegex);
 	// the fallback is to return false if the pathParts array is null
 	return pathParts?.length === 1;
@@ -148,18 +148,18 @@ export const isValidPath = (path: string) => {
 /// sorts the paths in the OpenAPI document alphabetically
 export const sortPathsAlphabetically = () => {
 	const tempPathObject = {};
-	const store = get(openApiStore);
+	const store = get(selectedSpec);
 	// @ts-expect-error - we are working with an initially empty object
-	Object.keys(store.paths)
+	Object.keys(store.spec.paths)
 		.sort()
 		.forEach((key) => {
 			// @ts-expect-error - we are working with initially empty objects
-			tempPathObject[key] = store.paths[key];
+			tempPathObject[key] = store.spec.paths[key];
 		});
 
 	// update path object
-	openApiStore.update((data) => {
-		data.paths = tempPathObject;
+	selectedSpec.update((data) => {
+		data.spec.paths = tempPathObject;
 		return data;
 	});
 };
@@ -171,7 +171,7 @@ export const getPathVariables = (path: string) => {
 	return variables.map((variable) => variable.replace('{', '').replace('}', ''));
 };
 
-export const sortPathParameters = (parameters: OpenAPIV3.ParameterObject[]) => {
+export const sortPathParameters = (parameters: OpenAPIV3_1.ParameterObject[]) => {
 	const tempParameters = parameters;
 	tempParameters.sort((a, b) => {
 		if (a.in < b.in) return -1;

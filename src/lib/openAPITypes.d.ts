@@ -15,13 +15,14 @@ export declare namespace OpenAPIV3_1 {
 			info: InfoObject;
 			jsonSchemaDialect?: string;
 			servers?: ServerObject[];
+			security?: SecurityRequirementObject[];
 		} & (
 			| (Pick<PathsWebhooksComponents<T>, 'paths'> &
-					Omit<Partial<PathsWebhooksComponents<T>>, 'paths'>)
+				Omit<Partial<PathsWebhooksComponents<T>>, 'paths'>)
 			| (Pick<PathsWebhooksComponents<T>, 'webhooks'> &
-					Omit<Partial<PathsWebhooksComponents<T>>, 'webhooks'>)
+				Omit<Partial<PathsWebhooksComponents<T>>, 'webhooks'>)
 			| (Pick<PathsWebhooksComponents<T>, 'components'> &
-					Omit<Partial<PathsWebhooksComponents<T>>, 'components'>)
+				Omit<Partial<PathsWebhooksComponents<T>>, 'components'>)
 		)
 	>;
 	export type InfoObject = Modify<
@@ -64,8 +65,8 @@ export declare namespace OpenAPIV3_1 {
 			parameters?: (ReferenceObject | ParameterObject)[];
 		}
 	> & {
-		[method in HttpMethods]?: OperationObject<T>;
-	};
+			[method in HttpMethods]?: OperationObject<T>;
+		};
 	export type OperationObject<T extends {} = {}> = Modify<
 		OpenAPIV3.OperationObject<T>,
 		{
@@ -192,7 +193,9 @@ export declare namespace OpenAPIV3_1 {
 	export type OAuth2SecurityScheme = OpenAPIV3.OAuth2SecurityScheme;
 	export type OpenIdSecurityScheme = OpenAPIV3.OpenIdSecurityScheme;
 	export type TagObject = OpenAPIV3.TagObject;
-	export {};
+	export type OAuth2Flows = OpenAPIV3.OAuth2Flows;
+	export type OAuth2Scopes = OpenAPIV3.OAuth2Scopes;
+	export { };
 }
 
 export declare namespace OpenAPIV3 {
@@ -267,8 +270,8 @@ export declare namespace OpenAPIV3 {
 		servers?: ServerObject[];
 		parameters?: (ReferenceObject | ParameterObject)[];
 	} & {
-		[method in HttpMethods]?: OperationObject<T>;
-	};
+			[method in HttpMethods]?: OperationObject<T>;
+		};
 	type OperationObject<T extends {} = {}> = {
 		tags?: string[];
 		summary?: string;
@@ -293,7 +296,7 @@ export declare namespace OpenAPIV3 {
 		name: string;
 		in: string;
 	}
-	interface HeaderObject extends ParameterBaseObject {}
+	interface HeaderObject extends ParameterBaseObject { }
 	interface ParameterBaseObject {
 		description?: string;
 		required?: boolean;
@@ -483,40 +486,38 @@ export declare namespace OpenAPIV3 {
 		name: string;
 		in: string;
 	}
+	interface OAuth2Scopes {
+		[scope: string]: string;
+	}
+	interface OAuth2Flows {
+		implicit?: {
+			authorizationUrl: string;
+			refreshUrl?: string;
+			scopes: OAuth2Scopes
+		};
+		password?: {
+			tokenUrl: string;
+			refreshUrl?: string;
+			scopes: OAuth2Scopes
+		};
+		clientCredentials?: {
+			tokenUrl: string;
+			refreshUrl?: string;
+			scopes: OAuth2Scopes
+		};
+		authorizationCode?: {
+			authorizationUrl: string;
+			tokenUrl: string;
+			refreshUrl?: string;
+			scopes: OAuth2Scopes
+		};
+
+	}
+
 	interface OAuth2SecurityScheme {
 		type: 'oauth2';
 		description?: string;
-		flows: {
-			implicit?: {
-				authorizationUrl: string;
-				refreshUrl?: string;
-				scopes: {
-					[scope: string]: string;
-				};
-			};
-			password?: {
-				tokenUrl: string;
-				refreshUrl?: string;
-				scopes: {
-					[scope: string]: string;
-				};
-			};
-			clientCredentials?: {
-				tokenUrl: string;
-				refreshUrl?: string;
-				scopes: {
-					[scope: string]: string;
-				};
-			};
-			authorizationCode?: {
-				authorizationUrl: string;
-				tokenUrl: string;
-				refreshUrl?: string;
-				scopes: {
-					[scope: string]: string;
-				};
-			};
-		};
+		flows: OAuth2Flows;
 	}
 	interface OpenIdSecurityScheme {
 		type: 'openIdConnect';

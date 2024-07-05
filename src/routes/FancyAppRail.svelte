@@ -1,45 +1,15 @@
 <script lang="ts">
-	import {
-		AppRail,
-		AppRailAnchor,
-		AppRailTile,
-		FileButton,
-		LightSwitch
-	} from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
-	import { localStoragePrefix } from '$lib';
-	import { goto } from '$app/navigation';
-	import { parse, stringify } from 'yaml';
-	import { openApiStore } from '$lib';
-	import filenamify from 'filenamify';
-
-	let files: FileList | undefined;
-
-	$: fileName = filenamify($openApiStore.info.title) || 'openapi';
-
-	function onFileUpload(e: Event): void {
-		if (!files) return;
-
-		const file = files[0];
-		const reader = new FileReader();
-		reader.onload = () => {
-			const result = reader.result as string;
-			const isJson = file.name.endsWith('.json');
-			try {
-				if (isJson) {
-					openApiStore.set(JSON.parse(result));
-				} else {
-					openApiStore.set(parse(result));
-				}
-			} catch (error) {
-				console.error(`Error parsing ${isJson ? 'json' : 'yaml'} file`, error);
-			}
-		};
-		reader.readAsText(file);
-	}
+	import DownloadButtons from '$lib/components/FileManagement/DownloadButtons.svelte';
+	import { AppRail, AppRailAnchor, LightSwitch } from '@skeletonlabs/skeleton';
 </script>
 
-<AppRail width="w-28" aspectRatio="aspect-[3/2]" background="variant-ghost-surface" border="ring-0">
+<AppRail
+	width="w-28"
+	aspectRatio="aspect-[20/14]"
+	background="variant-ghost-surface"
+	border="ring-0"
+>
 	<svelte:fragment slot="lead">
 		<div>
 			<AppRailAnchor href="/">
@@ -105,7 +75,7 @@
 				d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
 			/>
 		</svg>
-		Authentication
+		Security
 	</AppRailAnchor>
 	<AppRailAnchor href="/paths" selected={$page.url.pathname === '/paths'}>
 		<svg
@@ -124,7 +94,7 @@
 		</svg>
 		Paths
 	</AppRailAnchor>
-	<AppRailAnchor href="/stats" selected={$page.url.pathname === '/stats'}>
+	<AppRailAnchor href="/webhooks" selected={$page.url.pathname === '/webhooks'}>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
@@ -136,120 +106,35 @@
 			<path
 				stroke-linecap="round"
 				stroke-linejoin="round"
-				d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+				d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"
 			/>
 		</svg>
-		Stats
+		Webhooks
 	</AppRailAnchor>
+	<AppRailAnchor href="/components" selected={$page.url.pathname === '/components'}>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke-width="1.5"
+			stroke="currentColor"
+			class="size-6 mx-auto"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"
+			/>
+		</svg>
+		Components
+	</AppRailAnchor>
+	
 
 	<svelte:fragment slot="trail">
-		<FileButton
-			bind:files
-			accept=".yml,.yaml,.json"
-			button="btn text-sm rounded-none text-wrap variant-soft-primary flex flex-col justify-center items-center h-20 w-full"
-			on:change={onFileUpload}
-			type="file"
-			name="openapispec"
-		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke-width="1.5"
-				stroke="currentColor"
-				class="size-6"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-				/>
-			</svg>
-			Upload
-		</FileButton>
-		<button
-			type="button"
-			class="btn text-sm rounded-none text-wrap variant-soft-primary flex flex-col justify-center items-center h-20 w-full"
-			on:click={() => {
-				const openApiStorage = localStorage.getItem(`${localStoragePrefix}openApi`);
-				if (!openApiStorage) return;
-				const openApi = JSON.parse(openApiStorage);
-				const blob = new Blob([JSON.stringify(openApi, null, 2)], { type: 'application/json' });
-				const url = URL.createObjectURL(blob);
-				const a = document.createElement('a');
-				a.href = url;
-				a.download = `${fileName}.json`;
-				document.body.appendChild(a);
-				a.click();
-				window.URL.revokeObjectURL(url);
-			}}
-		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke-width="1.5"
-				stroke="currentColor"
-				class="size-6"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-				/>
-			</svg>
-			Download JSON
-		</button>
-		<button
-			type="button"
-			class="btn text-sm rounded-none text-wrap variant-soft-primary flex flex-col justify-center items-center h-20 w-full"
-			on:click={() => {
-				const openApiStorage = localStorage.getItem(`${localStoragePrefix}openApi`);
-				if (!openApiStorage) return;
-				const openApi = JSON.parse(openApiStorage);
-				const blob = new Blob(
-					[stringify(openApi, null, { indent: 2, aliasDuplicateObjects: false })],
-					{ type: 'application/yaml' }
-				);
-				const url = URL.createObjectURL(blob);
-				const a = document.createElement('a');
-				a.href = url;
-				a.download = `${fileName}.yaml`;
-				document.body.appendChild(a);
-				a.click();
-				window.URL.revokeObjectURL(url);
-			}}
-		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke-width="1.5"
-				stroke="currentColor"
-				class="size-6"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-				/>
-			</svg>
-			Download YAML
-		</button>
-		<button
-			type="button"
-			class="btn text-sm rounded-none text-wrap variant-soft-error hover:variant-soft-error flex justify-center items-center h-16 w-full"
-			on:click={() => {
-				if (confirm('Are you sure you want to reset ALL current inputs?')) {
-					// remove `openApi` from localStorage
-					localStorage.removeItem(`${localStoragePrefix}openApi`);
-					window.location.pathname = '/';
-				}
-			}}
-		>
-			Clear all inputs
-		</button>
-		<div class="flex justify-center items-center h-10 w-full my-4">
+		<div class="p-2">
+			<DownloadButtons />
+		</div>
+		<div class="flex justify-center my-4">
 			<LightSwitch />
 		</div>
 		<AppRailAnchor href="https://www.speakeasyapi.dev/openapi" target="_blank">
