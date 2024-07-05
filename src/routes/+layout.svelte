@@ -47,10 +47,11 @@
 			loadSpec(specs[0]);
 			specLoaded.set(true);
 		}
+
+		console.log('apiSpecs load', $selectedSpecId, $selectedSpec);
 	});
 
 	onMount(() => {
-		console.log('onMount', $selectedSpecId, $selectedSpec);
 		if ($selectedSpec) {
 			pageLoaded.set(true);
 		}
