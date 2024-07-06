@@ -36,9 +36,6 @@
 				<input type="text" bind:value={$selectedSpec.name} class="input w-full" />
 			</label>
 			<div>
-				<p><span class="font-semibold text-lg">Id:</span> {$selectedSpec.id || 'Not Saved'}</p>
-			</div>
-			<div>
 				<p class="font-semibold text-lg">Stats:</p>
 				{#each stats as stat}
 					<p class="">
@@ -46,16 +43,7 @@
 					</p>
 				{/each}
 			</div>
-			<div class="flex flex-row justify-center gap-2">
-				{#if $selectedSpec.id}
-					<CreateNewButton />
-				{/if}
-				<SaveButton />
-				{#if $selectedSpec.id}
-					<SaveNewButton />
-					<DeleteButton spec={$selectedSpec} />
-				{/if}
-			</div>
+			
 		</div>
 		{#if $apiSpecs && $apiSpecs.length > 0}
 			<table class="table">
@@ -82,8 +70,9 @@
 				</tbody>
 			</table>
 			<div class="flex flex-row justify-center w-full gap-4">
-				<DeleteAllButton />
+				<CreateNewButton />
 				<UploadButton />
+				<DeleteAllButton />
 			</div>
 		{:else}
 			<UploadButton />

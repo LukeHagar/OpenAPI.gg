@@ -14,5 +14,5 @@
 		}
 	}}
 >
-	Create New
+	New
 </button>

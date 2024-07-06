@@ -57,15 +57,6 @@
 		}
 	});
 
-	// $: console.log(
-	// 	'newSpec',
-	// 	$selectedSpec,
-	// 	$selectedSpecId,
-	// 	$apiSpecs,
-	// 	$apiSpecs?.length,
-	// 	specLoaded
-	// );
-
 	//window keydown event listener for ctrl+s for saving
 	const saveListener = (e: KeyboardEvent) => {
 		if (e.ctrlKey && e.key === 's') {
@@ -83,7 +74,15 @@
 <AppShell slotPageContent="md:p-4 p-2">
 	<svelte:fragment slot="header">
 		<AppBar padding="px-2 py-1 ">
-			<svelte:fragment slot="lead"> OpenAPI.gg</svelte:fragment>
+			<svelte:fragment slot="lead">
+				<h1 class="h1 md:text-2xl text-lg">
+					<span
+						class="bg-gradient-to-br from-primary-500 to-tertiary-400 bg-clip-text text-transparent box-decoration-clone"
+					>
+						OpenAPI.gg
+					</span>
+				</h1>
+			</svelte:fragment>
 			<svelte:fragment slot="trail">
 				<div class="p-1 flex flex-row md:gap-3 gap-1">
 					<DownloadButtons />
