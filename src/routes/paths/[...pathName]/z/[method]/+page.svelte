@@ -45,7 +45,7 @@
 		</label>
 
 		<label class="label flex flex-col">
-			<span>OperationId</span>
+			<span>Operation ID</span>
 			{#if $selectedSpec.spec.paths[$page.params.pathName][$page.params.method].operationId !== undefined}
 				<input
 					type="text"
@@ -60,7 +60,7 @@
 					on:click={() =>
 						($selectedSpec.spec.paths[$page.params.pathName][$page.params.method].operationId = '')}
 				>
-					Add OperationId
+					Add Operation ID
 				</button>
 			{/if}
 		</label>
