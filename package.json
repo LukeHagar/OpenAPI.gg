@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@skeletonlabs/skeleton": "2.10.0",
 		"@skeletonlabs/tw-plugin": "0.4.0",
-		"@sveltejs/adapter-auto": "^3.2.2",
+		"@sveltejs/adapter-node": "^5.2.3",
 		"@sveltejs/kit": "^2.5.18",
 		"@sveltejs/vite-plugin-svelte": "^3.1.1",
 		"@tailwindcss/forms": "0.5.7",
@@ -51,5 +51,6 @@
 	},
 	"engines": {
 		"node": ">20.0.0"
-	}
+	},
+	"packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
 }
